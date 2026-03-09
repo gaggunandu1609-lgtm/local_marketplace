@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .hero {
+        text-align: center;
+        padding: 60px 20px 80px;
+    }
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        color: var(--text-main);
+        margin-bottom: 20px;
+        line-height: 1.2;
+        letter-spacing: -1px;
+    }
+    .hero h1 span {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        max-width: 600px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+    }
+    
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: -20px;
+    }
+    
+    .feature-card {
+        text-align: center;
+        padding: 40px 30px;
+    }
+    
+    .feature-icon {
+        font-size: 3rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+    }
+    
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .feature-card p {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+    
+    .recent-services {
+        margin-top: 80px;
+        margin-bottom: 40px;
+    }
+    
+    .section-title {
+        text-align: center;
+        font-size: 2.2rem;
+        margin-bottom: 40px;
+        font-weight: 700;
+    }
+    
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+    }
+    
+    .service-item {
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .service-badge {
+        align-self: flex-start;
+        background: rgba(79, 70, 229, 0.1);
+        color: var(--primary);
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+    
+    .service-item h4 {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+    
+    .service-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .service-meta i {
+        color: #fbbf24;
+    }
+    
+    .service-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-main);
+        margin-top: auto;
+        padding-top: 15px;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+</style>
+
+<div class="hero">
+    <h1>Find the Best <span>Local Pros</span> for Any Job</h1>
+    <p>From plumbers to photographers, we connect you with top-rated, verified local service providers in your area. Quick, easy, and reliable.</p>
+    <a href="{% url 'services' %}" class="btn" style="font-size: 1.1rem; padding: 14px 32px;">
+        <i class="fa-solid fa-magnifying-glass" style="margin-right: 8px;"></i> Browse Services
+    </a>
+</div>
+
+<div class="features">
+    <div class="glass-card feature-card">
+        <i class="fa-solid fa-shield-halved feature-icon"></i>
+        <h3>Verified Experts</h3>
+        <p>Every professional on our platform undergoes a background check and verification process for your peace of mind.</p>
+    </div>
+    <div class="glass-card feature-card">
+        <i class="fa-solid fa-star feature-icon"></i>
+        <h3>Top Rated</h3>
+        <p>Read genuine reviews from people in your community to help you choose the right pro for your specific needs.</p>
+    </div>
+    <div class="glass-card feature-card">
+        <i class="fa-solid fa-bolt feature-icon"></i>
+        <h3>Fast Booking</h3>
+        <p>Book your required service in just a few clicks. Transparent pricing with no hidden fees or surprise charges.</p>
+    </div>
+</div>
+
+<div class="recent-services">
+    <h2 class="section-title">Featured Professionals</h2>
+    
+    {% if services %}
+        <div class="service-grid">
+        {% for service in services %}
+            <div class="glass-card service-item">
+                <div class="service-badge">{{ service.service_category }}</div>
+                <h4>{{ service.full_name }}</h4>
+                
+                <div class="service-meta">
+                    <span><i class="fa-solid fa-star"></i> {{ service.rating }} ({{ service.total_jobs }} jobs)</span>
+                </div>
+                
+                <div class="service-meta">
+                    <span><i class="fa-solid fa-location-dot" style="color:var(--secondary)"></i> {{ service.city }}, {{ service.area }}</span>
+                </div>
+                
+                <div class="service-price">
+                    Starts at ₹{{ service.starting_price }}
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="glass-card text-center" style="padding: 40px;">
+            <i class="fa-solid fa-box-open" style="font-size: 3rem; color: #cbd5e1; margin-bottom: 15px;"></i>
+            <h3 style="color: var(--text-muted)">No services available yet.</h3>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

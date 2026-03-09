@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .page-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .page-header h1 {
+        font-size: 2.8rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    
+    .page-header p {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .service-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    .provider-card {
+        padding: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+    }
+    
+    .provider-header {
+        padding: 24px 24px 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    
+    .provider-info h3 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: var(--text-main);
+    }
+    
+    .category-badge {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    
+    .verified-badge {
+        color: var(--secondary);
+        font-size: 1.2rem;
+        margin-left: 8px;
+    }
+
+    .provider-body {
+        padding: 20px 24px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .stat-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+    
+    .stat-row i {
+        width: 20px;
+        text-align: center;
+        color: var(--primary);
+    }
+    
+    .rating-stars {
+        color: #fbbf24;
+    }
+    
+    .provider-footer {
+        padding: 20px 24px;
+        background: rgba(255, 255, 255, 0.4);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .price-box p {
+        background: transparent;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .price {
+        font-size: 1.4rem;
+        font-weight: 800;
+        color: var(--text-main);
+    }
+    
+    /* Status indicators */
+    .status-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 6px;
+    }
+    .status-available { background-color: var(--secondary); }
+    .status-busy { background-color: #ef4444; }
+
+</style>
+
+<div class="page-header">
+    <h1>Our Professionals</h1>
+    <p>Find the perfect expert for your task. View ratings, experience, and instantly book their services.</p>
+</div>
+
+{% if services %}
+<div class="service-grid">
+    {% for provider in services %}
+    <div class="glass-card provider-card">
+        
+        <div class="provider-header">
+            <div class="provider-info">
+                <h3>
+                    {{ provider.full_name }}
+                    {% if provider.verified %}
+                        <i class="fa-solid fa-circle-check verified-badge" title="Verified Professional"></i>
+                    {% endif %}
+                </h3>
+                <span class="category-badge">{{ provider.service_category }}</span>
+            </div>
+            
+            <div style="text-align:right">
+                <span class="status-dot {% if provider.availability_status %}status-available{% else %}status-busy{% endif %}"></span>
+                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">
+                    {% if provider.availability_status %}Available{% else %}Busy{% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="provider-body">
+            <div class="stat-row">
+                <i class="fa-solid fa-star rating-stars"></i>
+                <span><strong>{{ provider.rating }}</strong> ({{ provider.total_jobs }} reviews)</span>
+            </div>
+            
+            <div class="stat-row">
+                <i class="fa-solid fa-location-dot"></i>
+                <span>{{ provider.city }}, {{ provider.area }}</span>
+            </div>
+            
+            <div class="stat-row">
+                <i class="fa-solid fa-briefcase"></i>
+                <span>{{ provider.experience_year }} years experience</span>
+            </div>
+        </div>
+
+        <div class="provider-footer">
+            <div class="price-box">
+                <p>Starting at</p>
+                <div class="price">₹{{ provider.starting_price }}</div>
+            </div>
+            <a href="{% url 'service_detail' provider.id %}" class="btn">View Details</a>
+        </div>
+        
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="glass-card text-center" style="padding: 60px 20px;">
+    <i class="fa-solid fa-folder-open" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
+    <h2 style="color: var(--text-main); margin-bottom: 10px;">No Professionals Found</h2>
+    <p style="color: var(--text-muted);">We currently don't have any service providers listed.</p>
+</div>
+{% endif %}
+
+{% endblock %}
