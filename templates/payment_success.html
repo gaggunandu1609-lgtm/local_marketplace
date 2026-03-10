@@ -1,11 +1,74 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Payment Success</title>
-</head>
-<body>
-    <h2>✅ Payment Successful!</h2>
-    <p>Your booking has been completed successfully.</p>
-    <a href="/">Go Back Home</a>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @keyframes checkmark {
+        0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+        70%  { transform: scale(1.2) rotate(3deg); }
+        100% { transform: scale(1) rotate(0); opacity: 1; }
+    }
+    .success-icon { animation: checkmark 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .confetti-line { height: 6px; background: linear-gradient(90deg, #4f46e5, #10b981, #f59e0b, #ef4444, #8b5cf6); border-radius: 3px; }
+</style>
+
+<div class="row justify-content-center py-5">
+    <div class="col-md-6">
+        <div class="confetti-line mb-0 rounded-top-4"></div>
+        <div style="background: white; border-radius: 0 0 24px 24px; box-shadow: 0 20px 60px rgba(79,70,229,0.12); padding: 50px 40px; text-align: center;">
+            
+            <!-- Success Icon -->
+            <div class="success-icon mb-4">
+                <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display:flex; align-items:center; justify-content:center; margin: 0 auto; box-shadow: 0 10px 30px rgba(16,185,129,0.4);">
+                    <i class="fa-solid fa-check text-white" style="font-size: 40px;"></i>
+                </div>
+            </div>
+
+            <h1 class="fw-bold mb-2" style="font-size: 28px;">Payment Successful!</h1>
+            <p class="text-muted mb-5">Your booking is confirmed. The provider has been notified and will contact you shortly.</p>
+
+            <!-- Booking Details Card -->
+            <div class="p-4 mb-4 text-start rounded-3" style="background:#f8fafc; border:1px solid #e2e8f0;">
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted" style="font-size:13px;">Service</span>
+                    <span class="fw-bold" style="font-size:13px;">{{ booking.service.name }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted" style="font-size:13px;">Provider</span>
+                    <span class="fw-bold" style="font-size:13px;">{{ booking.provider.business_name }}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted" style="font-size:13px;">Scheduled Date</span>
+                    <span class="fw-bold" style="font-size:13px;">{{ booking.booking_date }}</span>
+                </div>
+                {% if payment_id %}
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="text-muted" style="font-size:13px;">Payment ID</span>
+                    <span class="fw-bold text-success" style="font-size:12px; font-family:monospace;">{{ payment_id }}</span>
+                </div>
+                {% endif %}
+                <hr class="my-2">
+                <div class="d-flex justify-content-between">
+                    <span class="fw-bold">Amount Paid</span>
+                    <span class="fw-bold text-primary fs-5">₹{{ booking.total_amount|floatformat:"0" }}</span>
+                </div>
+            </div>
+
+            <!-- Status Badge -->
+            <div class="d-inline-flex align-items-center gap-2 px-4 py-2 rounded-pill mb-5" style="background: #ecfdf5; border: 1px solid #6ee7b7;">
+                <span class="rounded-circle d-inline-block" style="width:8px;height:8px;background:#10b981;"></span>
+                <span class="fw-bold text-success" style="font-size: 13px;">Booking Confirmed — Awaiting Provider Acceptance</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex gap-3 justify-content-center">
+                <a href="{% url 'my_orders' %}" class="btn fw-bold py-3 px-5" style="border-radius:14px;">
+                    <i class="fa-solid fa-list-check me-2"></i>View My Orders
+                </a>
+                <a href="/" class="btn btn-outline-secondary fw-bold py-3 px-5" style="border-radius:14px;">
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

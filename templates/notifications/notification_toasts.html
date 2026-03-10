@@ -1,0 +1,30 @@
+{% for notification in notifications %}
+<div class="toast show animate__animated animate__fadeInRight mb-2" role="alert" aria-live="assertive" aria-atomic="true" 
+     style="min-width: 250px; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-radius: 12px; border: 1px solid rgba(79, 70, 229, 0.2); box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+    <div class="toast-header bg-transparent border-0 py-2">
+        <i class="fa-solid fa-bell text-primary me-2"></i>
+        <strong class="me-auto">{{ notification.title }}</strong>
+        <small class="text-muted">Just now</small>
+        <button type="button" class="btn-close" 
+                hx-post="{% url 'mark_read' notification.id %}" 
+                hx-swap="delete" 
+                hx-target="closest .toast"
+                aria-label="Close"></button>
+    </div>
+    <div class="toast-body pt-0 pb-3">
+        {{ notification.message }}
+        {% if notification.link %}
+        <div class="mt-2">
+            <a href="{{ notification.link }}" class="btn btn-sm btn-primary rounded-pill px-3" style="font-size: 11px;">View Details</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% if notifications %}
+<!-- Out-of-band update for the navbar badge -->
+<span id="notification-badge" hx-swap-oob="true" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" style="font-size: 0.6rem;">
+    0
+</span>
+{% endif %}

@@ -1,101 +1,101 @@
 provider_id,full_name,service_category,phone_number,city,area,experience_years,starting_price,rating,total_jobs,availability_status,verified,registration_date
-1,Provider_1,Photographer,9324801499,Mumbai,Powai,17,1884,5.0,299,Busy,Yes,2025-04-19
-2,Provider_2,Bike Mechanic,9194648117,Pune,Wakad,19,892,3.8,310,Available,No,2025-08-08
-3,Provider_3,Photographer,9868487519,Bangalore,Koramangala,18,669,4.1,650,Available,No,2025-10-01
-4,Provider_4,Electrician,9321118373,Bangalore,Jayanagar,16,1883,3.1,774,Available,Yes,2022-07-29
-5,Provider_5,Carpenter,9690979121,Chennai,Anna Nagar,8,1240,4.7,664,Available,Yes,2024-12-17
-6,Provider_6,Photographer,9733851441,Bangalore,HSR Layout,20,730,4.9,811,Busy,Yes,2023-01-01
-7,Provider_7,AC Repair Technician,9186006484,Hyderabad,Gachibowli,4,2360,4.5,655,Busy,No,2024-02-27
-8,Provider_8,Electrician,9474018411,Mumbai,Borivali,1,2298,3.1,912,Busy,No,2022-06-21
-9,Provider_9,Carpenter,9875376463,Pune,Hadapsar,15,2191,4.1,905,Available,No,2026-02-21
-10,Provider_10,Electrician,9214104416,Chennai,Anna Nagar,12,725,3.6,682,Available,Yes,2025-03-02
-11,Provider_11,Photographer,9303050399,Bangalore,Whitefield,2,678,4.3,330,Available,Yes,2025-02-01
-12,Provider_12,Beautician (Home Service),9285899484,Chennai,Adyar,5,1918,4.9,316,Busy,No,2025-11-11
-13,Provider_13,Carpenter,9888921366,Mumbai,Thane,3,1595,3.9,447,Busy,No,2025-02-21
-14,Provider_14,Electrician,9192013800,Bangalore,HSR Layout,4,767,4.9,92,Busy,No,2023-06-30
-15,Provider_15,Laptop/Computer Repair,9199274271,Pune,Baner,13,1232,4.8,548,Available,Yes,2025-11-02
-16,Provider_16,Plumber,9300239222,Bangalore,Koramangala,10,1461,3.6,754,Available,No,2025-04-12
-17,Provider_17,AC Repair Technician,9170668673,Bangalore,HSR Layout,13,1402,3.3,470,Busy,No,2022-10-22
-18,Provider_18,AC Repair Technician,9843449165,Hyderabad,Madhapur,8,653,4.3,289,Busy,Yes,2024-08-25
-19,Provider_19,Electrician,9144596962,Mumbai,Thane,3,1756,3.7,49,Available,No,2022-02-12
-20,Provider_20,Home Tutor,9758091783,Pune,Hadapsar,8,432,3.8,646,Available,Yes,2022-09-19
-21,Provider_21,Beautician (Home Service),9832421964,Hyderabad,Gachibowli,18,2203,4.6,703,Available,No,2025-03-16
-22,Provider_22,Laptop/Computer Repair,9556075811,Mumbai,Andheri,2,791,4.5,636,Busy,No,2023-06-18
-23,Provider_23,Home Cleaner,9839634439,Bangalore,HSR Layout,17,558,4.5,229,Busy,Yes,2025-07-30
-24,Provider_24,Home Cleaner,9264083960,Hyderabad,Kukatpally,7,997,3.8,820,Busy,No,2025-04-21
-25,Provider_25,Bike Mechanic,9677678097,Hyderabad,Ameerpet,6,2124,4.8,781,Busy,Yes,2025-07-14
-26,Provider_26,Laptop/Computer Repair,9976893519,Chennai,Tambaram,11,2485,3.9,728,Available,Yes,2023-08-31
-27,Provider_27,Photographer,9559744159,Mumbai,Thane,13,2313,4.8,806,Busy,No,2025-07-29
-28,Provider_28,AC Repair Technician,9728547058,Hyderabad,Begumpet,15,1617,4.5,446,Busy,No,2024-04-17
-29,Provider_29,Electrician,9103302162,Mumbai,Powai,1,574,3.4,732,Busy,Yes,2022-05-19
-30,Provider_30,Beautician (Home Service),9380603489,Chennai,Adyar,12,1731,4.9,687,Busy,No,2023-04-10
-31,Provider_31,Bike Mechanic,9768161011,Pune,Wakad,19,1745,3.5,806,Available,Yes,2022-05-13
-32,Provider_32,Photographer,9353762806,Bangalore,HSR Layout,18,1109,4.3,65,Busy,Yes,2024-11-11
-33,Provider_33,Home Tutor,9392838476,Pune,Hadapsar,18,1189,4.1,257,Available,Yes,2023-12-28
-34,Provider_34,Plumber,9418650628,Bangalore,HSR Layout,17,2160,3.3,535,Available,No,2024-08-12
-35,Provider_35,Plumber,9558834112,Chennai,Anna Nagar,15,2387,3.6,715,Available,Yes,2025-02-14
-36,Provider_36,Bike Mechanic,9679301804,Pune,Wakad,19,1760,3.7,954,Available,Yes,2023-11-21
-37,Provider_37,Laptop/Computer Repair,9812855279,Pune,Hadapsar,4,1889,4.0,672,Busy,Yes,2022-08-29
-38,Provider_38,Plumber,9700925366,Bangalore,HSR Layout,5,2483,4.7,385,Busy,Yes,2024-08-21
-39,Provider_39,AC Repair Technician,9758281830,Bangalore,Jayanagar,7,1228,5.0,274,Available,Yes,2025-08-17
-40,Provider_40,Carpenter,9325259572,Chennai,Anna Nagar,10,655,3.3,800,Busy,No,2022-02-16
-41,Provider_41,Electrician,9153164427,Pune,Baner,6,1030,4.4,53,Busy,Yes,2023-04-05
-42,Provider_42,Beautician (Home Service),9417234188,Mumbai,Borivali,2,1192,4.0,517,Busy,No,2024-12-10
-43,Provider_43,Home Cleaner,9120860901,Hyderabad,Begumpet,6,639,4.4,394,Busy,No,2025-09-14
-44,Provider_44,Electrician,9240698996,Bangalore,Jayanagar,12,1795,3.2,5,Available,No,2022-10-10
-45,Provider_45,Home Tutor,9210950176,Chennai,Adyar,7,2069,3.0,350,Busy,No,2025-08-20
-46,Provider_46,Home Cleaner,9539382095,Bangalore,Whitefield,11,447,4.8,696,Busy,Yes,2025-03-24
-47,Provider_47,AC Repair Technician,9930652153,Pune,Kothrud,5,1065,3.7,368,Available,No,2025-03-18
-48,Provider_48,Laptop/Computer Repair,9205545501,Mumbai,Powai,5,1369,4.2,983,Busy,Yes,2022-11-23
-49,Provider_49,Home Tutor,9872113663,Chennai,Tambaram,12,1065,3.0,115,Available,No,2023-11-21
-50,Provider_50,Beautician (Home Service),9945764204,Hyderabad,Kukatpally,16,2112,4.1,817,Busy,No,2025-01-12
-51,Provider_51,Bike Mechanic,9856944762,Bangalore,Koramangala,15,1731,5.0,939,Available,No,2025-09-04
-52,Provider_52,AC Repair Technician,9778057695,Pune,Hinjewadi,20,1866,4.5,122,Busy,No,2025-12-12
-53,Provider_53,Bike Mechanic,9627179960,Chennai,Tambaram,12,2067,3.7,91,Busy,No,2023-07-05
-54,Provider_54,AC Repair Technician,9394424303,Chennai,Anna Nagar,3,853,4.7,759,Busy,No,2024-07-19
-55,Provider_55,Carpenter,9556061365,Hyderabad,Kukatpally,12,877,4.9,760,Available,No,2022-02-04
-56,Provider_56,Bike Mechanic,9770629132,Pune,Baner,20,2179,4.1,77,Available,Yes,2022-05-05
-57,Provider_57,Photographer,9845552753,Chennai,T Nagar,12,1003,4.4,751,Busy,No,2024-04-15
-58,Provider_58,Laptop/Computer Repair,9746035889,Chennai,T Nagar,13,1139,4.5,932,Busy,Yes,2022-07-22
-59,Provider_59,Photographer,9700505361,Hyderabad,Ameerpet,16,1151,3.5,376,Available,Yes,2024-09-28
-60,Provider_60,Bike Mechanic,9889055185,Chennai,Tambaram,10,2159,4.5,517,Busy,No,2024-03-01
-61,Provider_61,Electrician,9726472795,Pune,Wakad,16,2296,3.1,695,Busy,Yes,2022-12-06
-62,Provider_62,Photographer,9351106359,Pune,Hadapsar,4,1938,4.0,662,Available,Yes,2022-07-23
-63,Provider_63,Home Cleaner,9734383826,Hyderabad,Madhapur,10,401,3.0,196,Available,Yes,2022-11-02
-64,Provider_64,Carpenter,9504681211,Mumbai,Powai,4,1077,3.8,41,Available,No,2024-02-09
-65,Provider_65,Home Cleaner,9654966940,Chennai,T Nagar,20,794,4.2,72,Busy,No,2024-12-08
-66,Provider_66,Plumber,9560242456,Chennai,T Nagar,13,1298,4.8,818,Busy,No,2023-10-14
-67,Provider_67,Home Cleaner,9146759539,Bangalore,Koramangala,17,1024,4.8,303,Busy,No,2025-12-10
-68,Provider_68,Beautician (Home Service),9389987271,Pune,Hinjewadi,8,1669,3.6,366,Busy,No,2023-01-09
-69,Provider_69,AC Repair Technician,9933730467,Hyderabad,Ameerpet,11,470,4.9,297,Available,Yes,2022-07-30
-70,Provider_70,Home Cleaner,9253412982,Bangalore,Whitefield,3,1837,4.0,512,Available,Yes,2022-05-26
-71,Provider_71,Beautician (Home Service),9253190467,Bangalore,HSR Layout,5,1894,3.8,96,Available,Yes,2025-02-14
-72,Provider_72,Photographer,9894470942,Chennai,Anna Nagar,2,1159,4.0,291,Available,Yes,2022-10-19
-73,Provider_73,Laptop/Computer Repair,9990216585,Hyderabad,Gachibowli,14,1795,3.8,88,Busy,No,2023-08-08
-74,Provider_74,Home Tutor,9265912086,Hyderabad,Kukatpally,18,1177,4.4,291,Busy,Yes,2022-11-01
-75,Provider_75,Bike Mechanic,9761484431,Hyderabad,Ameerpet,20,1910,4.7,965,Available,No,2022-10-11
-76,Provider_76,Home Tutor,9386390314,Hyderabad,Madhapur,1,2241,3.2,647,Available,No,2025-05-30
-77,Provider_77,Photographer,9992315955,Chennai,Velachery,14,1225,4.6,770,Busy,Yes,2024-02-25
-78,Provider_78,Electrician,9737958054,Hyderabad,Ameerpet,19,2242,4.6,963,Busy,Yes,2025-08-20
-79,Provider_79,Home Cleaner,9249612523,Bangalore,Indiranagar,15,308,3.4,984,Available,Yes,2024-08-18
-80,Provider_80,Bike Mechanic,9108597255,Chennai,Adyar,16,1070,3.7,808,Available,Yes,2025-03-08
-81,Provider_81,Bike Mechanic,9841968074,Chennai,Velachery,8,1727,3.7,347,Available,No,2022-01-25
-82,Provider_82,Home Cleaner,9455419162,Bangalore,Whitefield,18,1830,3.8,799,Available,No,2023-12-30
-83,Provider_83,Laptop/Computer Repair,9700889178,Pune,Baner,11,2380,4.1,423,Busy,Yes,2025-02-02
-84,Provider_84,Plumber,9758593155,Pune,Wakad,6,1228,3.7,768,Available,No,2025-11-16
-85,Provider_85,Photographer,9862426429,Bangalore,HSR Layout,17,2431,3.7,880,Available,Yes,2022-02-12
-86,Provider_86,Home Cleaner,9858359865,Chennai,Anna Nagar,9,864,3.8,558,Busy,Yes,2024-07-27
-87,Provider_87,Electrician,9219109779,Mumbai,Borivali,20,2126,4.1,707,Available,No,2023-04-07
-88,Provider_88,Plumber,9140547603,Mumbai,Powai,14,1243,4.9,727,Busy,No,2022-08-22
-89,Provider_89,Plumber,9911484916,Hyderabad,Ameerpet,15,1997,5.0,611,Busy,Yes,2024-06-27
-90,Provider_90,Laptop/Computer Repair,9191594350,Pune,Kothrud,12,564,3.9,902,Available,Yes,2025-03-04
-91,Provider_91,Home Cleaner,9348669423,Chennai,Anna Nagar,8,1191,4.2,650,Busy,Yes,2023-05-28
-92,Provider_92,AC Repair Technician,9341355434,Pune,Wakad,18,1418,3.3,238,Busy,Yes,2023-06-11
-93,Provider_93,Home Cleaner,9162796108,Pune,Hadapsar,17,2492,4.4,360,Available,No,2025-09-17
-94,Provider_94,Home Cleaner,9385609173,Hyderabad,Kukatpally,8,892,3.9,279,Busy,No,2024-02-16
-95,Provider_95,Plumber,9939474443,Bangalore,HSR Layout,3,1661,4.5,980,Available,Yes,2023-01-13
-96,Provider_96,Bike Mechanic,9839867115,Chennai,Tambaram,18,1526,4.8,659,Available,No,2025-06-25
-97,Provider_97,Plumber,9440833637,Pune,Kothrud,20,1125,3.3,678,Available,Yes,2023-03-13
-98,Provider_98,Carpenter,9682798481,Bangalore,Jayanagar,5,2346,4.2,144,Busy,No,2022-02-22
-99,Provider_99,Home Tutor,9885738535,Mumbai,Andheri,9,906,4.4,116,Available,No,2024-05-10
-100,Provider_100,Beautician (Home Service),9590354416,Chennai,T Nagar,3,972,3.8,413,Available,Yes,2024-08-04
+1,Aditya Clicks,Photographer,9324801499,Davanagere,Market Area,17,1884,5.0,299,Busy,Yes,2025-04-19
+2,Vikram Auto Tech,Bike Mechanic,9194648117,Mysore,Jayalakshmipuram,19,892,3.8,310,Available,No,2025-08-08
+3,Royal Karan Studio,Photographer,9868487519,Belgaum,Tilakwadi,18,669,4.1,650,Available,No,2025-10-01
+4,Bright Rahul Services,Electrician,9321118373,Gulbarga,Green Park,16,1883,3.1,774,Available,Yes,2022-07-29
+5,Sai Craft House,Carpenter,9690979121,Kolar,Green Park,8,1240,4.7,664,Available,Yes,2024-12-17
+6,Royal Rahul Studio,Photographer,9733851441,Bellary,City Center,20,730,4.9,811,Busy,Yes,2023-01-01
+7,Neha Cooling,AC Repair Technician,9186006484,Kolar,Market Area,4,2360,4.5,655,Busy,No,2024-02-27
+8,Zaid Electricals,Electrician,9474018411,Gulbarga,Station Road,1,2298,3.1,912,Busy,No,2022-06-21
+9,Ramesh Furniture,Carpenter,9875376463,Bhadravati,Main Road,15,2191,4.1,905,Available,No,2026-02-21
+10,Power Solution Ramesh,Electrician,9214104416,Bellary,Green Park,12,725,3.6,682,Available,Yes,2025-03-02
+11,Royal Karan Studio,Photographer,9303050399,Davanagere,City Center,2,678,4.3,330,Available,Yes,2025-02-01
+12,Ramesh Makeover,Beautician (Home Service),9285899484,Hubli-Dharwad,Vidyanagar,5,1918,4.9,316,Busy,No,2025-11-11
+13,Creative Deepak Interiors,Carpenter,9888921366,Tumkur,Green Park,3,1595,3.9,447,Busy,No,2025-02-21
+14,Bright Vihaan Services,Electrician,9192013800,Udupi,Ambalpady,4,767,4.9,92,Busy,No,2023-06-30
+15,Ananya PC Hub,Laptop/Computer Repair,9199274271,Hassan,City Center,13,1232,4.8,548,Available,Yes,2025-11-02
+16,Aanya Plumbing,Plumber,9300239222,Mysore,Jayalakshmipuram,10,1461,3.6,754,Available,No,2025-04-12
+17,Cool Rohan AC Services,AC Repair Technician,9170668673,Hospet,City Center,13,1402,3.3,470,Busy,No,2022-10-22
+18,Aditya Cooling,AC Repair Technician,9843449165,Mysore,Gokulam,8,653,4.3,289,Busy,Yes,2024-08-25
+19,Sparky Aanya,Electrician,9144596962,Bhadravati,Station Road,3,1756,3.7,49,Available,No,2022-02-12
+20,Aanya Tutors,Home Tutor,9758091783,Davanagere,Main Road,8,432,3.8,646,Available,Yes,2022-09-19
+21,Priya Makeover,Beautician (Home Service),9832421964,Mysore,Jayalakshmipuram,18,2203,4.6,703,Available,No,2025-03-16
+22,Vijay Digital Care,Laptop/Computer Repair,9556075811,Mandya,Green Park,2,791,4.5,636,Busy,No,2023-06-18
+23,Fresh Home Zoya,Home Cleaner,9839634439,Shimoga,Station Road,17,558,4.5,229,Busy,Yes,2025-07-30
+24,Fresh Home Deepak,Home Cleaner,9264083960,Hospet,Station Road,7,997,3.8,820,Busy,No,2025-04-21
+25,Master Mechanic Zaid,Bike Mechanic,9677678097,Shimoga,City Center,6,2124,4.8,781,Busy,Yes,2025-07-14
+26,Anita IT Solutions,Laptop/Computer Repair,9976893519,Bellary,Market Area,11,2485,3.9,728,Available,Yes,2023-08-31
+27,Royal Sunita Studio,Photographer,9559744159,Chitradurga,Green Park,13,2313,4.8,806,Busy,No,2025-07-29
+28,Chill Zone Karan,AC Repair Technician,9728547058,Hospet,Main Road,15,1617,4.5,446,Busy,No,2024-04-17
+29,Bright Diya Services,Electrician,9103302162,Hassan,Market Area,1,574,3.4,732,Busy,Yes,2022-05-19
+30,Arjun Bridal Care,Beautician (Home Service),9380603489,Bidar,Green Park,12,1731,4.9,687,Busy,No,2023-04-10
+31,Master Mechanic Ravi,Bike Mechanic,9768161011,Tumkur,Main Road,19,1745,3.5,806,Available,Yes,2022-05-13
+32,Suresh Clicks,Photographer,9353762806,Chitradurga,City Center,18,1109,4.3,65,Busy,Yes,2024-11-11
+33,Smart Zoya Tuition,Home Tutor,9392838476,Kolar,Green Park,18,1189,4.1,257,Available,Yes,2023-12-28
+34,Rahul Plumbing,Plumber,9418650628,Davanagere,City Center,17,2160,3.3,535,Available,No,2024-08-12
+35,Zoya Water Care,Plumber,9558834112,Mysore,Jayalakshmipuram,15,2387,3.6,715,Available,Yes,2025-02-14
+36,Master Mechanic Ananya,Bike Mechanic,9679301804,Mandya,Main Road,19,1760,3.7,954,Available,Yes,2023-11-21
+37,Siddharth PC Hub,Laptop/Computer Repair,9812855279,Chitradurga,Market Area,4,1889,4.0,672,Busy,Yes,2022-08-29
+38,Rohan Plumbing,Plumber,9700925366,Mangalore,Bejai,5,2483,4.7,385,Busy,Yes,2024-08-21
+39,Vijay Air Care,AC Repair Technician,9758281830,Mangalore,Bejai,7,1228,5.0,274,Available,Yes,2025-08-17
+40,Elite Wood Kavya,Carpenter,9325259572,Shimoga,Station Road,10,655,3.3,800,Busy,No,2022-02-16
+41,Bright Varun Services,Electrician,9153164427,Mandya,Market Area,6,1030,4.4,53,Busy,Yes,2023-04-05
+42,Glow Zoya Parlour,Beautician (Home Service),9417234188,Kolar,Station Road,2,1192,4.0,517,Busy,No,2024-12-10
+43,Elite Vihaan Cleaning,Home Cleaner,9120860901,Hospet,Market Area,6,639,4.4,394,Busy,No,2025-09-14
+44,Power Solution Ananya,Electrician,9240698996,Gadag,Market Area,12,1795,3.2,5,Available,No,2022-10-10
+45,Smart Zaid Tuition,Home Tutor,9210950176,Shimoga,City Center,7,2069,3.0,350,Busy,No,2025-08-20
+46,Shine Simran Cleaners,Home Cleaner,9539382095,Hospet,Main Road,11,447,4.8,696,Busy,Yes,2025-03-24
+47,Suresh Cooling,AC Repair Technician,9930652153,Udupi,Ambalpady,5,1065,3.7,368,Available,No,2025-03-18
+48,Sneha Digital Care,Laptop/Computer Repair,9205545501,Bidar,Main Road,5,1369,4.2,983,Busy,Yes,2022-11-23
+49,Smart Kavya Tuition,Home Tutor,9872113663,Hospet,Market Area,12,1065,3.0,115,Available,No,2023-11-21
+50,Arjun Makeover,Beautician (Home Service),9945764204,Gulbarga,Green Park,16,2112,4.1,817,Busy,No,2025-01-12
+51,Quick Fix Sunita,Bike Mechanic,9856944762,Mandya,Market Area,15,1731,5.0,939,Available,No,2025-09-04
+52,Frosty Priya Tech,AC Repair Technician,9778057695,Gulbarga,Market Area,20,1866,4.5,122,Busy,No,2025-12-12
+53,Ramesh Motors,Bike Mechanic,9627179960,Bhadravati,Market Area,12,2067,3.7,91,Busy,No,2023-07-05
+54,Arjun Cooling,AC Repair Technician,9394424303,Mysore,Gokulam,3,853,4.7,759,Busy,No,2024-07-19
+55,Creative Deepak Interiors,Carpenter,9556061365,Belgaum,Tilakwadi,12,877,4.9,760,Available,No,2022-02-04
+56,Kavya Puncture Shop,Bike Mechanic,9770629132,Mandya,Station Road,20,2179,4.1,77,Available,Yes,2022-05-05
+57,Sunita Photography,Photographer,9845552753,Mandya,City Center,12,1003,4.4,751,Busy,No,2024-04-15
+58,Laptop Doctor Kavya,Laptop/Computer Repair,9746035889,Hospet,Main Road,13,1139,4.5,932,Busy,Yes,2022-07-22
+59,Sneha Photography,Photographer,9700505361,Gadag,City Center,16,1151,3.5,376,Available,Yes,2024-09-28
+60,Ravi Auto Tech,Bike Mechanic,9889055185,Kolar,Main Road,10,2159,4.5,517,Busy,No,2024-03-01
+61,Sparky Ramesh,Electrician,9726472795,Raichur,Main Road,16,2296,3.1,695,Busy,Yes,2022-12-06
+62,Pixel Perfect Vikram,Photographer,9351106359,Bangalore,Indiranagar,4,1938,4.0,662,Available,Yes,2022-07-23
+63,Sparkle Neha,Home Cleaner,9734383826,Davanagere,City Center,10,401,3.0,196,Available,Yes,2022-11-02
+64,Diya Craft House,Carpenter,9504681211,Raichur,Green Park,4,1077,3.8,41,Available,No,2024-02-09
+65,Sparkle Rohan,Home Cleaner,9654966940,Gadag,Main Road,20,794,4.2,72,Busy,No,2024-12-08
+66,Urban Neha Plumbers,Plumber,9560242456,Hassan,Station Road,13,1298,4.8,818,Busy,No,2023-10-14
+67,Vikram Eco Clean,Home Cleaner,9146759539,Udupi,Ambalpady,17,1024,4.8,303,Busy,No,2025-12-10
+68,Glow Aanya Parlour,Beautician (Home Service),9389987271,Hassan,Green Park,8,1669,3.6,366,Busy,No,2023-01-09
+69,Chill Zone Aditya,AC Repair Technician,9933730467,Bangalore,Indiranagar,11,470,4.9,297,Available,Yes,2022-07-30
+70,Deepak Eco Clean,Home Cleaner,9253412982,Belgaum,Shahapur,3,1837,4.0,512,Available,Yes,2022-05-26
+71,Elegant Deepak Spa,Beautician (Home Service),9253190467,Gadag,Market Area,5,1894,3.8,96,Available,Yes,2025-02-14
+72,Rohan Photography,Photographer,9894470942,Mangalore,Kodialbail,2,1159,4.0,291,Available,Yes,2022-10-19
+73,Sunita Digital Care,Laptop/Computer Repair,9990216585,Hubli-Dharwad,Keshwapur,14,1795,3.8,88,Busy,No,2023-08-08
+74,Sunita Knowledge Hub,Home Tutor,9265912086,Hubli-Dharwad,Keshwapur,18,1177,4.4,291,Busy,Yes,2022-11-01
+75,Quick Fix Arjun,Bike Mechanic,9761484431,Mandya,Station Road,20,1910,4.7,965,Available,No,2022-10-11
+76,Smart Arjun Tuition,Home Tutor,9386390314,Mangalore,Kodialbail,1,2241,3.2,647,Available,No,2025-05-30
+77,Focus Zoya Studio,Photographer,9992315955,Bidar,Main Road,14,1225,4.6,770,Busy,Yes,2024-02-25
+78,Volt Suresh Pro,Electrician,9737958054,Raichur,Market Area,19,2242,4.6,963,Busy,Yes,2025-08-20
+79,Sparkle Rahul,Home Cleaner,9249612523,Kolar,Station Road,15,308,3.4,984,Available,Yes,2024-08-18
+80,Suresh Auto Tech,Bike Mechanic,9108597255,Bhadravati,City Center,16,1070,3.7,808,Available,Yes,2025-03-08
+81,Master Mechanic Ravi,Bike Mechanic,9841968074,Udupi,Manipal,8,1727,3.7,347,Available,No,2022-01-25
+82,Simran Eco Clean,Home Cleaner,9455419162,Bhadravati,Station Road,18,1830,3.8,799,Available,No,2023-12-30
+83,Varun Digital Care,Laptop/Computer Repair,9700889178,Hubli-Dharwad,Saptapur,11,2380,4.1,423,Busy,Yes,2025-02-02
+84,Rohan Plumbing,Plumber,9758593155,Mysore,Jayalakshmipuram,6,1228,3.7,768,Available,No,2025-11-16
+85,Pixel Perfect Priya,Photographer,9862426429,Bidar,Station Road,17,2431,3.7,880,Available,Yes,2022-02-12
+86,Priya Eco Clean,Home Cleaner,9858359865,Tumkur,Main Road,9,864,3.8,558,Busy,Yes,2024-07-27
+87,Zaid Electricals,Electrician,9219109779,Davanagere,Main Road,20,2126,4.1,707,Available,No,2023-04-07
+88,Urban Varun Plumbers,Plumber,9140547603,Shimoga,Green Park,14,1243,4.9,727,Busy,No,2022-08-22
+89,Flow Specialist Suresh,Plumber,9911484916,Bangalore,HSR Layout,15,1997,5.0,611,Busy,Yes,2024-06-27
+90,Ananya PC Hub,Laptop/Computer Repair,9191594350,Mandya,City Center,12,564,3.9,902,Available,Yes,2025-03-04
+91,Shine Aanya Cleaners,Home Cleaner,9348669423,Tumkur,City Center,8,1191,4.2,650,Busy,Yes,2023-05-28
+92,Frosty Suresh Tech,AC Repair Technician,9341355434,Hospet,Main Road,18,1418,3.3,238,Busy,Yes,2023-06-11
+93,Sparkle Aditya,Home Cleaner,9162796108,Mysore,Vijayanagar,17,2492,4.4,360,Available,No,2025-09-17
+94,Sparkle Varun,Home Cleaner,9385609173,Mysore,Kuvempunagar,8,892,3.9,279,Busy,No,2024-02-16
+95,Flow Specialist Sana,Plumber,9939474443,Davanagere,Green Park,3,1661,4.5,980,Available,Yes,2023-01-13
+96,Vihaan Puncture Shop,Bike Mechanic,9839867115,Raichur,Market Area,18,1526,4.8,659,Available,No,2025-06-25
+97,Leak Fix Aanya,Plumber,9440833637,Belgaum,Tilakwadi,20,1125,3.3,678,Available,Yes,2023-03-13
+98,Creative Suresh Interiors,Carpenter,9682798481,Gadag,Green Park,5,2346,4.2,144,Busy,No,2022-02-22
+99,Rahul Knowledge Hub,Home Tutor,9885738535,Davanagere,Main Road,9,906,4.4,116,Available,No,2024-05-10
+100,Rahul Beauty Studio,Beautician (Home Service),9590354416,Gulbarga,Station Road,3,972,3.8,413,Available,Yes,2024-08-04

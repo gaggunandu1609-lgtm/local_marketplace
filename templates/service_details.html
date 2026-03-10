@@ -1,267 +1,196 @@
 {% extends "base.html" %}
+
 {% block content %}
 <style>
-    .detail-container {
-        display: grid;
-        grid-template-columns: 1fr 400px;
-        gap: 40px;
-        max-width: 1200px;
-        margin: 0 auto;
+    .service-header {
+        background: white;
+        border-radius: 40px;
+        padding: 50px;
+        margin-bottom: 40px;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     }
-    
-    .main-section {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
+    .service-image-large {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 30px;
+        margin-bottom: 30px;
     }
-    
-    .profile-header {
-        display: flex;
-        gap: 25px;
-        align-items: center;
-    }
-    
-    .profile-avatar {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 3rem;
-        box-shadow: 0 10px 25px rgba(79, 70, 229, 0.3);
-    }
-    
-    .profile-title h1 {
-        font-size: 2.5rem;
-        margin-bottom: 5px;
-        color: var(--text-main);
-    }
-    
-    .profile-title p {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .badge {
-        background: rgba(16, 185, 129, 0.1);
-        color: var(--secondary);
-        padding: 4px 10px;
-        border-radius: 12px;
-        font-size: 0.85rem;
-        font-weight: 600;
-    }
-    
-    .info-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
-    
-    .info-card {
-        padding: 20px;
-        display: flex;
-        align-items: flex-start;
-        gap: 15px;
-    }
-    
-    .info-icon {
-        width: 45px;
-        height: 45px;
-        border-radius: 12px;
-        background: rgba(79, 70, 229, 0.1);
-        color: var(--primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-    }
-    
-    .info-content h4 {
-        margin: 0 0 5px 0;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-    }
-    
-    .info-content p {
-        margin: 0;
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-    
-    .booking-sidebar {
+    .booking-card {
         position: sticky;
         top: 100px;
     }
-    
-    .booking-card {
-        text-align: center;
-        padding: 40px 30px;
-    }
-    
-    .price-display {
+    .pro-profile {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 20px;
         margin-bottom: 30px;
     }
-    
-    .price-display p {
-        color: var(--text-muted);
-        margin-bottom: 5px;
-    }
-    
-    .price-display h2 {
-        font-size: 3rem;
-        color: var(--primary);
-    }
-    
-    .form-group {
-        margin-bottom: 20px;
-        text-align: left;
-    }
-    
-    .form-group label {
-        display: block;
-        font-weight: 500;
-        margin-bottom: 8px;
-        color: var(--text-main);
-    }
-    
-    .form-control {
-        width: 100%;
-        padding: 12px 15px;
-        border: 1px solid rgba(0,0,0,0.1);
-        border-radius: 12px;
-        font-size: 1rem;
-        background: rgba(255,255,255,0.8);
-        transition: all 0.3s;
-    }
-    
-    .form-control:focus {
-        outline: none;
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
-    }
-    
-    @media (max-width: 900px) {
-        .detail-container {
-            grid-template-columns: 1fr;
-        }
-        .booking-sidebar {
-            position: static;
-        }
+    .review-item {
+        padding: 25px;
+        border-bottom: 1px solid #f1f5f9;
     }
 </style>
 
-<a href="{% url 'services' %}" style="display: inline-flex; align-items: center; gap: 8px; color: var(--text-muted); text-decoration: none; margin-bottom: 30px; font-weight: 500;">
-    <i class="fa-solid fa-arrow-left"></i> Back to Services
-</a>
+<div class="row">
+    <div class="col-lg-8">
+        <div class="service-header">
+            {% if service.image %}
+                <img src="{{ service.image.url }}" class="service-image-large shadow-sm">
+            {% else %}
+                <div class="bg-light service-image-large d-flex align-items-center justify-content-center">
+                    <i class="fa-solid fa-screwdriver-wrench fa-5x text-muted opacity-25"></i>
+                </div>
+            {% endif %}
+            
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="badge bg-soft-primary px-3 py-2 rounded-pill text-primary" style="background-color: rgba(79, 70, 229, 0.1);">{{ service.category.name }}</span>
+                <div class="rating-badge">
+                    <i class="fa-solid fa-star text-warning"></i> {{ service.average_rating|default:0.0|floatformat:1 }} ({{ service.total_reviews }} Reviews)
+                </div>
+            </div>
+            
+            <h1 class="fw-800 mb-2">{{ service.name }}</h1>
+            <div class="mb-4 text-warning">
+                {% for i in "12345"|make_list %}
+                    <i class="fa-solid fa-star {% if forloop.counter > service.average_rating %}text-muted opacity-25{% endif %}"></i>
+                {% endfor %}
+            </div>
+            <p class="text-muted mb-5" style="font-size: 1.15rem; line-height: 1.7;">{{ service.description }}</p>
+            
+            <h3 class="fw-bold mb-4">Service Provider</h3>
+            <div class="pro-profile">
+                <div class="bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 60px; height: 60px; border-radius: 15px; font-size: 1.5rem;">
+                    {{ service.provider.business_name|slice:":1" }}
+                </div>
+                <div>
+                    <h5 class="fw-bold mb-0">{{ service.provider.business_name }}</h5>
+                    <div class="small text-muted">{{ service.provider.experience_years }} Years Experience • <i class="fa-solid fa-location-dot text-danger"></i> {{ service.provider.city_ref.name }}, {{ service.provider.area }}</div>
+                    {% if service.address %}
+                    <div class="small text-muted mt-1">{{ service.address }}</div>
+                    {% endif %}
+                </div>
+            </div>
 
-<div class="detail-container">
-    
-    <!-- MAIN INFO SECTION -->
-    <div class="main-section">
-        
-        <div class="glass-card profile-header">
-            <div class="profile-avatar">
-                <i class="fa-solid fa-user-tie"></i>
-            </div>
-            <div class="profile-title">
-                <h1>{{ service.full_name }}</h1>
-                <p>
-                    {{ service.service_category }} 
-                    {% if service.verified %}
-                        <span class="badge"><i class="fa-solid fa-shield-check"></i> Verified</span>
-                    {% endif %}
-                </p>
-                <div style="margin-top: 10px; color: #fbbf24; font-size: 1.1rem; font-weight: 600;">
-                    <i class="fa-solid fa-star"></i> {{ service.rating }} ({{ service.total_jobs }} Jobs Completed)
+            <h3 class="fw-bold mb-4 mt-5">Service Portfolio</h3>
+            {% if service.provider.portfolio_images.all %}
+            <div class="row g-3 mb-4">
+                {% for item in service.provider.portfolio_images.all %}
+                <div class="col-md-4">
+                    <div class="rounded-4 overflow-hidden shadow-sm" style="height: 150px;">
+                        <img src="{{ item.image.url }}" class="w-100 h-100" style="object-fit: cover; cursor: pointer;" 
+                             onclick="window.open(this.src, '_blank')" title="{{ item.caption }}">
+                    </div>
                 </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="p-4 bg-light rounded-4 text-center mb-4">
+                <p class="text-muted mb-0">No portfolio images added yet.</p>
+            </div>
+            {% endif %}
+
+            <h3 class="fw-bold mb-4 mt-5">Customer Reviews</h3>
+            <div class="reviews-list">
+                {% for review in reviews %}
+                <div class="review-item">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div class="fw-bold">{{ review.user.username }}</div>
+                        <div class="text-warning small">
+                            {% for i in "12345"|make_list %}
+                                <i class="fa-solid fa-star {% if forloop.counter > review.rating %}text-muted opacity-25{% endif %}"></i>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <p class="text-muted mb-0 small">{{ review.comment }}</p>
+                    <div class="text-muted" style="font-size: 0.75rem; margin-top: 5px;">{{ review.created_at|date:"M d, Y" }}</div>
+                </div>
+                {% empty %}
+                <p class="text-muted">No reviews yet for this service.</p>
+                {% endfor %}
             </div>
         </div>
-        
-        <div class="info-grid">
-            <div class="glass-card info-card">
-                <div class="info-icon"><i class="fa-solid fa-briefcase"></i></div>
-                <div class="info-content">
-                    <h4>Experience</h4>
-                    <p>{{ service.experience_year }} Years</p>
-                </div>
-            </div>
-            
-            <div class="glass-card info-card">
-                <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
-                <div class="info-content">
-                    <h4>Location</h4>
-                    <p>{{ service.area }}, {{ service.city }}</p>
-                </div>
-            </div>
-            
-            <div class="glass-card info-card">
-                <div class="info-icon"><i class="fa-solid fa-calendar-check"></i></div>
-                <div class="info-content">
-                    <h4>Status</h4>
-                    <p>{% if service.availability_status %}Available for Booking{% else %}Currently Busy{% endif %}</p>
-                </div>
-            </div>
-            
-            <div class="glass-card info-card">
-                <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
-                <div class="info-content">
-                    <h4>Contact Support</h4>
-                    <p>Via Platform</p>
-                </div>
-            </div>
-        </div>
-        
-        <div class="glass-card">
-            <h3 style="margin-bottom: 15px; font-size: 1.4rem;">About this Professional</h3>
-            <p style="color: var(--text-muted); line-height: 1.7; font-size: 1.05rem;">
-                {{ service.full_name }} is a highly rated {{ service.service_category }} operating in {{ service.area }}, {{ service.city }}. With {{ service.experience_year }} years of professional experience and a track record of {{ service.total_jobs }} successfully completed jobs, you can trust them to deliver excellent results. They joined LocalPros on {{ service.registration_date|date:"F j, Y" }}.
-            </p>
-        </div>
-        
     </div>
-    
-    <!-- BOOKING SIDEBAR -->
-    <div class="booking-sidebar">
+
+    <!-- BOOKING WIDGET -->
+    <div class="col-lg-4">
         <div class="glass-card booking-card">
-            <div class="price-display">
-                <p>Starting Price</p>
-                <h2>₹{{ service.starting_price }}</h2>
+            <h4 class="fw-bold mb-4">Book Service</h4>
+            <div class="d-flex justify-content-between mb-4">
+                <span class="text-muted">Service Price</span>
+                <span class="fw-bold h4 mb-0">₹{{ service.price }}</span>
             </div>
             
-            <form action="#" method="POST">
+            <form action="{% url 'create_booking' service.id %}" method="POST">
                 {% csrf_token %}
-                
-                <div class="form-group">
-                    <label>Preferred Date</label>
-                    <input type="date" class="form-control" required>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold">Select Date & Time</label>
+                    <input type="datetime-local" name="booking_date" class="form-control bg-light border-0 py-3 rounded-4" required>
                 </div>
-                
-                <div class="form-group">
-                    <label>Job Description</label>
-                    <textarea class="form-control" rows="3" placeholder="Briefly describe what you need help with..." required></textarea>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold">Service Address</label>
+                    <textarea name="address" class="form-control bg-light border-0 py-3 rounded-4" rows="2" placeholder="Where should the pro arrive?" required></textarea>
                 </div>
-                
-                <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem; padding: 15px; margin-top: 10px;" {% if not service.availability_status %}disabled{% endif %}>
-                    {% if service.availability_status %}
-                        Proceed to Booking
-                    {% else %}
-                        Professional is Busy
-                    {% endif %}
-                </button>
+                <div class="mb-4">
+                    <label class="form-label small fw-bold">Requirement Details</label>
+                    <textarea name="description" class="form-control bg-light border-0 py-3 rounded-4" rows="3" placeholder="e.g. Any specific issues or preferences?"></textarea>
+                </div>
+                <div class="p-3 bg-light rounded-4 mb-4">
+                    <div class="d-flex justify-content-between small mb-2">
+                        <span>Platform Booking Fee</span>
+                        <span>₹50.00</span>
+                    </div>
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Due Now (Simulated)</span>
+                        <span class="text-primary">₹{{ service.price|add:50 }}</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn w-100 py-3 shadow-none mt-2">Book Now & Pay Fee</button>
             </form>
-            
-            <p style="margin-top: 20px; font-size: 0.85rem; color: var(--text-muted);">
-                You won't be charged yet.
-            </p>
+            <div class="text-center mt-3">
+                <p class="small text-muted"><i class="fa-solid fa-shield-check text-success me-1"></i> Secure payment & verified pros</p>
+            </div>
         </div>
     </div>
-    
 </div>
 
+{% if related_services %}
+<div class="row mt-5">
+    <div class="col-12 mb-4">
+        <h2 class="section-title">More from this Pro</h2>
+    </div>
+    {% for rel_service in related_services %}
+    <div class="col-md-3 mb-4">
+        <div class="glass-card h-100 p-0 overflow-hidden d-flex flex-column" style="border-radius: 20px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);">
+            <div class="position-relative overflow-hidden" style="height: 160px;">
+                {% if rel_service.image %}
+                    <img src="{{ rel_service.image.url }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+                {% else %}
+                    <div class="bg-light d-flex align-items-center justify-content-center h-100">
+                        <i class="fa-solid fa-image fa-2x text-muted opacity-25"></i>
+                    </div>
+                {% endif %}
+                <div class="position-absolute top-0 end-0 m-2">
+                    <span class="badge bg-white text-dark shadow-sm" style="border-radius: 10px; font-size: 0.7rem;">
+                        <i class="fa-solid fa-star text-warning me-1"></i> {{ rel_service.provider.rating }}
+                    </span>
+                </div>
+            </div>
+            <div class="p-3 flex-grow-1 d-flex flex-column">
+                <div class="small text-primary fw-700 mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">{{ rel_service.category.name|upper }}</div>
+                <h6 class="fw-bold mb-2 text-dark">{{ rel_service.name }}</h6>
+                <div class="d-flex justify-content-between align-items-center mt-auto">
+                    <div class="fw-bold text-primary">₹{{ rel_service.price }}</div>
+                    <a href="{% url 'service_detail' rel_service.id %}" class="btn btn-outline-primary btn-sm py-1 px-3 rounded-pill" style="font-size: 0.75rem;">Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 {% endblock %}

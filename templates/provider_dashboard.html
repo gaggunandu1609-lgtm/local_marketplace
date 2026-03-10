@@ -1,32 +1,135 @@
 {% extends "base.html" %}
+
 {% block content %}
+<div class="row mb-5 align-items-center">
+    <div class="col-md-7">
+        <h1 class="fw-800">Provider Dashboard</h1>
+        <p class="text-muted">Manage your services, bookings, and earnings</p>
+    </div>
+    <div class="col-md-5 text-end d-flex align-items-center justify-content-end gap-3">
+        <form method="POST" class="d-flex align-items-center bg-white p-2 rounded-pill shadow-sm">
+            {% csrf_token %}
+            <span class="small fw-bold text-muted me-2 ms-3">Status:</span>
+            <select name="availability" class="form-select form-select-sm border-0 bg-light rounded-pill fw-bold" onchange="this.form.submit()" style="width: auto;">
+                <option value="Available" {% if provider.availability == 'Available' %}selected{% endif %}>🟢 Available</option>
+                <option value="Busy" {% if provider.availability == 'Busy' %}selected{% endif %}>🟡 Busy</option>
+                <option value="Offline" {% if provider.availability == 'Offline' %}selected{% endif %}>🔴 Offline</option>
+            </select>
+        </form>
+        <a href="{% url 'add_service' %}" class="btn px-4 py-3"><i class="fa-solid fa-plus me-2"></i> Add New Service</a>
+    </div>
+</div>
 
-<h2>Provider Dashboard</h2>
+<!-- STATS CARDS -->
+<div class="row mb-5">
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center py-4 border-0 shadow-sm" style="background: white;">
+            <div class="h3 fw-bold text-primary mb-1">{{ stats.total_services }}</div>
+            <div class="small text-muted text-uppercase fw-600">Total Services</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center py-4 border-0 shadow-sm" style="background: white;">
+            <div class="h3 fw-bold text-warning mb-1">{{ stats.pending_bookings }}</div>
+            <div class="small text-muted text-uppercase fw-600">Pending Bookings</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center py-4 border-0 shadow-sm" style="background: white;">
+            <div class="h3 fw-bold text-success mb-1">{{ stats.completed_bookings }}</div>
+            <div class="small text-muted text-uppercase fw-600">Total Jobs Done</div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="glass-card text-center py-4 border-0 shadow-sm" style="background: white; border-right: 4px solid var(--primary) !important;">
+            <div class="h3 fw-bold text-primary mb-1">₹{{ stats.total_earnings }}</div>
+            <div class="small text-muted text-uppercase fw-600">Estimated Earnings</div>
+        </div>
+    </div>
+</div>
 
-<table class="table table-dark">
-    <tr>
-        <th>Service</th>
-        <th>Customer</th>
-        <th>Status</th>
-        <th>Action</th>
-    </tr>
+<div class="row">
+    <!-- BOOKINGS MANAGEMENT -->
+    <div class="col-lg-12 mb-5">
+        <h3 class="fw-bold mb-4">Booking Requests</h3>
+        <div class="glass-card p-0 overflow-hidden shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="px-4 py-3 border-0">Service</th>
+                            <th class="py-3 border-0">Customer</th>
+                            <th class="py-3 border-0">Date & Time</th>
+                            <th class="py-3 border-0 text-center">Status</th>
+                            <th class="px-4 py-3 border-0 text-end">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td class="px-4 py-4 fw-bold">{{ booking.service.name }}</td>
+                            <td class="py-4">{{ booking.user.username }}</td>
+                            <td class="py-4 small">{{ booking.booking_date|date:"d M Y" }} {% if booking.booking_time %}{{ booking.booking_time|time:"h:i A" }}{% endif %}</td>
+                            <td class="py-4 text-center">
+                                <span class="badge {% if booking.status == 'pending' %}bg-warning-subtle text-warning{% elif booking.status == 'confirmed' %}bg-primary-subtle text-primary{% elif booking.status == 'completed' %}bg-success-subtle text-success{% else %}bg-danger-subtle text-danger{% endif %} px-3 py-2 rounded-pill">
+                                    {{ booking.status|title }}
+                                </span>
+                            </td>
+                            <td class="px-4 py-4 text-end">
+                                {% if booking.status == 'pending' %}
+                                    <a href="{% url 'update_booking_status' booking.id 'confirmed' %}" class="btn btn-primary btn-sm px-3 shadow-none">Confirm</a>
+                                    <a href="{% url 'update_booking_status' booking.id 'cancelled' %}" class="btn btn-outline-danger btn-sm px-3 shadow-none">Cancel</a>
+                                {% elif booking.status == 'confirmed' %}
+                                    <a href="{% url 'update_booking_status' booking.id 'completed' %}" class="btn btn-success btn-sm px-3 shadow-none">Mark Completed</a>
+                                {% else %}
+                                    <span class="text-muted small">Done</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="text-center py-5 text-muted">No booking requests found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-    {% for booking in bookings %}
-    <tr>
-        <td>{{ booking.service.title }}</td>
-        <td>{{ booking.customer.username }}</td>
-        <td>{{ booking.status }}</td>
-        <td>
-            <a href="/dashboard/update/{{ booking.id }}/Accepted/" class="btn btn-success btn-sm">Accept</a>
-            <a href="/dashboard/update/{{ booking.id }}/Rejected/" class="btn btn-danger btn-sm">Reject</a>
-            <a href="{% url 'checkout' booking.id %}">
-    <button style="padding:10px 20px; background-color:green; color:white; border:none; border-radius:5px;">
-        Pay Now
-    </button>
-</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
-
+    <!-- SERVICES LIST -->
+    <div class="col-lg-12">
+        <h3 class="fw-bold mb-4">My Services</h3>
+        <div class="row">
+            {% for service in services %}
+            <div class="col-md-4 mb-4">
+                <div class="glass-card p-4 shadow-sm border-0 h-100" style="background: white;">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="small fw-bold text-primary">{{ service.category.name|upper }}</div>
+                        <div class="dropdown">
+                            <button class="btn btn-light btn-sm rounded-pill py-1 px-2 mb-0" type="button" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm p-2" style="border-radius: 12px;">
+                                <li><a class="dropdown-item rounded-3" href="{% url 'edit_service' service.id %}"><i class="fa-solid fa-pen-to-square me-2 small text-muted"></i> Edit</a></li>
+                                <li><a class="dropdown-item rounded-3 text-danger" href="{% url 'delete_service' service.id %}"><i class="fa-solid fa-trash me-2 small"></i> Delete</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h5 class="fw-bold mb-2">{{ service.name }}</h5>
+                    <div class="h4 fw-bold mb-4 text-primary">₹{{ service.price }}</div>
+                    <div class="mt-auto">
+                        <span class="small text-muted"><i class="fa-solid fa-chart-line me-1"></i> {{ service.bookings.count }} Bookings</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5 glass-card bg-light border-0">
+                <p class="text-muted">You haven't added any services yet.</p>
+                <a href="{% url 'add_service' %}" class="btn btn-sm px-4 mt-2">Add Your First Service</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

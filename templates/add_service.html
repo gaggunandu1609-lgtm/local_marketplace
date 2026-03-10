@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-6">
+        <div class="glass-card p-5">
+            <h2 class="fw-800 mb-2">{% if edit %}Edit Service{% else %}Add New Service{% endif %}</h2>
+            <p class="text-muted mb-4">{% if edit %}Update your service details{% else %}Tell your customers what you offer{% endif %}</p>
+            
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label class="form-label fw-600">Service Title</label>
+                    <input type="text" name="name" class="form-control bg-light border-0 py-3 rounded-4" placeholder="e.g. Master Plumbing Repair" value="{{ service.name }}" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-600">Category</label>
+                    <select name="category" class="form-select bg-light border-0 py-3 rounded-4" required>
+                        <option value="">Select Category</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if service.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-600">Price (INR)</label>
+                    <input type="number" name="price" class="form-control bg-light border-0 py-3 rounded-4" placeholder="500" value="{{ service.price }}" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-600">Description</label>
+                    <textarea name="description" class="form-control bg-light border-0 py-3 rounded-4" rows="4" placeholder="Describe your service in detail..." required>{{ service.description }}</textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-600">Display Image</label>
+                    <input type="file" name="image" class="form-control bg-light border-0 py-3 rounded-4">
+                </div>
+                
+                <div class="d-grid mt-5">
+                    <button type="submit" class="btn py-3 fw-bold shadow-none">{% if edit %}Update Service{% else %}Create Service{% endif %}</button>
+                    <a href="{% url 'provider_dashboard' %}" class="btn btn-light mt-3 py-3 fw-bold text-muted">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

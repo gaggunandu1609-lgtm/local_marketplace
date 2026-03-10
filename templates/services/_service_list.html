@@ -1,0 +1,43 @@
+<div class="row">
+    {% for service in services %}
+    <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+        <div class="service-card h-100 d-flex flex-column" id="service-{{ service.id }}">
+            <div class="position-relative">
+                {% if service.image %}
+                    <img src="{{ service.image.url }}" class="service-img" alt="{{ service.name }}">
+                {% else %}
+                    <div class="bg-light service-img d-flex align-items-center justify-content-center">
+                        <i class="fa-solid fa-screwdriver-wrench fa-3x text-muted opacity-25"></i>
+                    </div>
+                {% endif %}
+                <div class="position-absolute top-0 end-0 m-3">
+                    <div class="rating-badge shadow-sm">
+                        <i class="fa-solid fa-star me-1 text-warning"></i> {{ service.average_rating|default:0.0|floatformat:1 }} ({{ service.total_reviews }})
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 flex-grow-1 d-flex flex-column">
+                <div class="small text-primary fw-700 mb-1">{{ service.category.name|upper }}</div>
+                <h5 class="fw-bold mb-2">{{ service.name }}</h5>
+                <div class="small text-muted mb-3 d-flex justify-content-between">
+                    <span><i class="fa-solid fa-user-check me-1"></i> {{ service.provider.business_name }}</span>
+                    <span><i class="fa-solid fa-location-dot text-danger me-1"></i> {{ service.provider.city_ref.name }}, {{ service.provider.area }}</span>
+                </div>
+                <p class="text-muted small mb-4">{{ service.description|truncatechars:80 }}</p>
+                <div class="d-flex justify-content-between align-items-center mt-auto">
+                    <span class="price-tag">₹{{ service.price }}</span>
+                    <a href="{% url 'service_detail' service.id %}" class="btn px-4 py-2 mt-0">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+        <div class="glass-card py-5">
+            <i class="fa-solid fa-search fa-4x text-muted mb-3 opacity-25"></i>
+            <h3>No services found</h3>
+            <p class="text-muted">No services found. Try changing filters.</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>

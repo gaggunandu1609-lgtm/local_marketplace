@@ -115,6 +115,7 @@
                     <i class="fa-solid fa-user"></i>
                     {{ form.username|add_class:"form-control"|attr:"placeholder:Choose a username" }}
                 </div>
+                {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
             </div>
 
             <div class="form-group">
@@ -123,6 +124,7 @@
                     <i class="fa-solid fa-envelope"></i>
                     {{ form.email|add_class:"form-control"|attr:"placeholder:name@example.com" }}
                 </div>
+                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
             </div>
 
             <div class="form-group">
@@ -131,6 +133,7 @@
                     <i class="fa-solid fa-lock"></i>
                     {{ form.password|add_class:"form-control"|attr:"placeholder:Create a secret password" }}
                 </div>
+                {% if form.password.errors %}<div class="text-danger small mt-1">{{ form.password.errors }}</div>{% endif %}
             </div>
 
             <div class="form-group">
@@ -139,6 +142,7 @@
                     <i class="fa-solid fa-id-badge"></i>
                     {{ form.role|add_class:"form-select" }}
                 </div>
+                {% if form.role.errors %}<div class="text-danger small mt-1">{{ form.role.errors }}</div>{% endif %}
             </div>
 
             <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem; padding: 14px; margin-top: 10px;">

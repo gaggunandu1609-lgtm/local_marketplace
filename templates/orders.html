@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="fw-800">My Orders</h1>
+        <p class="text-muted">Track your service bookings and history</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="glass-card p-0 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th class="px-4 py-3 border-0">Service</th>
+                            <th class="py-3 border-0">Provider</th>
+                            <th class="py-3 border-0">Date & Time</th>
+                            <th class="py-3 border-0 text-center">Status</th>
+                            <th class="py-3 border-0">Price</th>
+                            <th class="px-4 py-3 border-0 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td class="px-4 py-4 fw-bold">
+                                <div class="d-flex align-items-center">
+                                    {% if booking.service.image %}
+                                        <img src="{{ booking.service.image.url }}" class="rounded me-3 shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+                                    {% else %}
+                                        <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fa-solid fa-wrench text-muted opacity-25"></i>
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        {{ booking.service.name }}<br>
+                                        <small class="text-muted fw-normal"><i class="fa-solid fa-location-dot text-danger x-small"></i> {{ booking.service.city|default:booking.service.area }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="py-4">{{ booking.service.provider.business_name }}</td>
+                            <td class="py-4 small">{{ booking.booking_date|date:"d M Y" }} {% if booking.booking_time %}{{ booking.booking_time|time:"h:i A" }}{% endif %}</td>
+                            <td class="py-4 text-center">
+                                {% if booking.status == 'pending' %}
+                                    <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">Pending</span>
+                                {% elif booking.status == 'confirmed' %}
+                                    <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">Confirmed</span>
+                                {% elif booking.status == 'completed' %}
+                                    <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Completed</span>
+                                {% else %}
+                                    <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">{{ booking.status|title }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="py-4 fw-bold text-primary">₹{{ booking.total_amount }}</td>
+                            <td class="px-4 py-4 text-end">
+                                {% if booking.status == 'completed' and not booking.review_details %}
+                                    <a href="{% url 'submit_review' booking.id %}" class="btn btn-sm py-2 px-3">Leave Review</a>
+                                {% elif booking.review_details %}
+                                    <span class="text-muted small italic">Reviewed</span>
+                                {% else %}
+                                    <a href="{% url 'service_detail' booking.service.id %}" class="btn btn-light btn-sm py-2 px-3 text-muted">View Details</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="fa-solid fa-calendar-xmark fa-3x mb-3 opacity-25"></i>
+                                <p>You haven't booked any services yet.</p>
+                                <a href="{% url 'services' %}" class="btn btn-sm px-4">Browse Services</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

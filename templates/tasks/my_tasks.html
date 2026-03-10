@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="fw-bold mb-4">My Posted Tasks</h2>
+        
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            {% if tasks %}
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Task Title</th>
+                                <th>Date Needed</th>
+                                <th>Status</th>
+                                <th>Budget</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                                <td class="align-middle fw-bold">{{ task.title }}</td>
+                                <td class="align-middle text-muted">{{ task.preferred_date|date:"d M, Y" }}</td>
+                                <td class="align-middle">
+                                    {% if task.status == 'Open' %}
+                                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">Open</span>
+                                    {% elif task.status == 'Completed' %}
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary px-3 py-2 rounded-pill">Completed</span>
+                                    {% else %}
+                                    <span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">{{ task.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="align-middle fw-bold">₹{{ task.budget }}</td>
+                                <td class="align-middle">
+                                    <a href="{% url 'task_detail' task.id %}" class="btn btn-sm btn-outline-primary shadow-none">View Quotes ({{ task.quotes.count }})</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fa-solid fa-list-check fa-3x text-muted opacity-25 mb-3"></i>
+                    <p class="text-muted mb-4">You haven't posted any tasks yet.</p>
+                    <a href="{% url 'post_task' %}" class="btn btn-primary px-4 py-2">Post a Task Now</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

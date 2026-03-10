@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="fw-bold mb-4">Open Tasks in Your City</h2>
+        <p class="text-muted mb-4">Send quotes on tasks posted by users.</p>
+        
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            {% if tasks %}
+                <div class="table-responsive">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Task Title</th>
+                                <th>Date Needed</th>
+                                <th>Customer</th>
+                                <th>Budget</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in tasks %}
+                            <tr>
+                                <td class="align-middle fw-bold">{{ task.title }}</td>
+                                <td class="align-middle text-muted">{{ task.preferred_date|date:"d M, Y" }}</td>
+                                <td class="align-middle">{{ task.customer.username }}</td>
+                                <td class="align-middle fw-bold">₹{{ task.budget }}</td>
+                                <td class="align-middle">
+                                    <a href="{% url 'task_detail' task.id %}" class="btn btn-sm btn-outline-primary shadow-none">View Task</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fa-solid fa-clipboard-check fa-3x text-muted opacity-25 mb-3"></i>
+                    <p class="text-muted mb-4">No open tasks right now. Don't worry, we'll notify you when someone posts!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,194 +1,112 @@
 {% extends "base.html" %}
+
 {% block content %}
 <style>
-    .page-header {
-        text-align: center;
-        margin-bottom: 50px;
+    .filter-section {
+        background: white;
+        padding: 25px;
+        border-radius: 24px;
+        margin-bottom: 30px;
+        border: 1px solid #f1f5f9;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     }
-    
-    .page-header h1 {
-        font-size: 2.8rem;
-        font-weight: 800;
-        margin-bottom: 15px;
-    }
-    
-    .page-header p {
-        color: var(--text-muted);
-        font-size: 1.1rem;
-        max-width: 600px;
-        margin: 0 auto;
-    }
-
-    .service-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 30px;
-    }
-
-    .provider-card {
-        padding: 0;
+    .service-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #f1f5f9;
+        border-radius: 24px;
+        background: white;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        background: rgba(255, 255, 255, 0.7);
     }
-    
-    .provider-header {
-        padding: 24px 24px 15px;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+    .service-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+        border-color: var(--primary);
     }
-    
-    .provider-info h3 {
-        font-size: 1.3rem;
+    .service-img {
+        height: 180px;
+        object-fit: cover;
+        width: 100%;
+    }
+    .rating-badge {
+        background: #fef3c7;
+        color: #92400e;
+        padding: 4px 10px;
+        border-radius: 8px;
         font-weight: 700;
-        margin-bottom: 6px;
-        color: var(--text-main);
+        font-size: 0.85rem;
     }
-    
-    .category-badge {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: white;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-    }
-    
-    .verified-badge {
-        color: var(--secondary);
-        font-size: 1.2rem;
-        margin-left: 8px;
-    }
-
-    .provider-body {
-        padding: 20px 24px;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .stat-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-    }
-    
-    .stat-row i {
-        width: 20px;
-        text-align: center;
+    .price-tag {
+        font-size: 1.5rem;
+        font-weight: 800;
         color: var(--primary);
     }
-    
-    .rating-stars {
-        color: #fbbf24;
-    }
-    
-    .provider-footer {
-        padding: 20px 24px;
-        background: rgba(255, 255, 255, 0.4);
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .price-box p {
-        background: transparent;
-        font-size: 0.85rem;
-        color: var(--text-muted);
-    }
-    
-    .price {
-        font-size: 1.4rem;
-        font-weight: 800;
-        color: var(--text-main);
-    }
-    
-    /* Status indicators */
-    .status-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        margin-right: 6px;
-    }
-    .status-available { background-color: var(--secondary); }
-    .status-busy { background-color: #ef4444; }
-
 </style>
 
-<div class="page-header">
-    <h1>Our Professionals</h1>
-    <p>Find the perfect expert for your task. View ratings, experience, and instantly book their services.</p>
-</div>
-
-{% if services %}
-<div class="service-grid">
-    {% for provider in services %}
-    <div class="glass-card provider-card">
-        
-        <div class="provider-header">
-            <div class="provider-info">
-                <h3>
-                    {{ provider.full_name }}
-                    {% if provider.verified %}
-                        <i class="fa-solid fa-circle-check verified-badge" title="Verified Professional"></i>
-                    {% endif %}
-                </h3>
-                <span class="category-badge">{{ provider.service_category }}</span>
-            </div>
-            
-            <div style="text-align:right">
-                <span class="status-dot {% if provider.availability_status %}status-available{% else %}status-busy{% endif %}"></span>
-                <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">
-                    {% if provider.availability_status %}Available{% else %}Busy{% endif %}
-                </span>
-            </div>
-        </div>
-
-        <div class="provider-body">
-            <div class="stat-row">
-                <i class="fa-solid fa-star rating-stars"></i>
-                <span><strong>{{ provider.rating }}</strong> ({{ provider.total_jobs }} reviews)</span>
-            </div>
-            
-            <div class="stat-row">
-                <i class="fa-solid fa-location-dot"></i>
-                <span>{{ provider.city }}, {{ provider.area }}</span>
-            </div>
-            
-            <div class="stat-row">
-                <i class="fa-solid fa-briefcase"></i>
-                <span>{{ provider.experience_year }} years experience</span>
-            </div>
-        </div>
-
-        <div class="provider-footer">
-            <div class="price-box">
-                <p>Starting at</p>
-                <div class="price">₹{{ provider.starting_price }}</div>
-            </div>
-            <a href="{% url 'service_detail' provider.id %}" class="btn">View Details</a>
-        </div>
-        
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="fw-800 mb-2">Discover Services</h1>
+        <p class="text-muted">Browse through our top-rated local professionals</p>
     </div>
-    {% endfor %}
 </div>
-{% else %}
-<div class="glass-card text-center" style="padding: 60px 20px;">
-    <i class="fa-solid fa-folder-open" style="font-size: 4rem; color: #cbd5e1; margin-bottom: 20px;"></i>
-    <h2 style="color: var(--text-main); margin-bottom: 10px;">No Professionals Found</h2>
-    <p style="color: var(--text-muted);">We currently don't have any service providers listed.</p>
-</div>
-{% endif %}
 
+<div class="row">
+    <!-- FILTERS -->
+    <div class="col-lg-3">
+        <div class="filter-section">
+            <form method="GET" action="{% url 'services' %}" 
+                  hx-get="{% url 'services' %}" 
+                  hx-target="#service-list" 
+                  hx-swap="innerHTML"
+                  hx-indicator="#loadingIndicator"
+                  hx-trigger="change, keyup delay:500ms from:input[name='q'], keyup delay:500ms from:input[name='city']">
+                <div id="loadingIndicator" class="htmx-indicator text-center text-primary mb-2">
+                    <div class="spinner-border spinner-border-sm" role="status"></div> Loading...
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-600">Location (City)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0"><i class="fa-solid fa-location-dot text-muted"></i></span>
+                        <input type="text" name="city" class="form-control bg-light border-0" placeholder="City..." value="{{ selected_city }}">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-600">Search Keywords</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                        <input type="text" name="q" class="form-control bg-light border-0" placeholder="Keywords..." value="{{ query }}">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-600">Category</label>
+                    <select name="category" class="form-select bg-light border-0">
+                        <option value="">All Categories</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if selected_category == cat.id|slugify %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label fw-600">Sort By</label>
+                    <select name="sort" class="form-select bg-light border-0">
+                        <option value="newest" {% if sort_by == 'newest' %}selected{% endif %}>Newest First</option>
+                        <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Best Rated</option>
+                        <option value="price_low" {% if sort_by == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_high" {% if sort_by == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn w-100 py-3 mt-2">Apply Filters</button>
+                <a href="{% url 'services' %}" class="btn btn-light w-100 py-3 mt-3 text-muted">Reset</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- SERVICES LIST -->
+    <div class="col-lg-9" id="service-list">
+        {% include "services/_service_list.html" %}
+    </div>
+</div>
 {% endblock %}

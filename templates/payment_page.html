@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .payment-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(79,70,229,0.12);
+        overflow: hidden;
+    }
+    .payment-header {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        padding: 32px 40px 24px;
+        color: white;
+    }
+    .payment-body { padding: 36px 40px; }
+    .method-tab {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 14px 20px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-weight: 600;
+        font-size: 14px;
+        color: #64748b;
+        background: white;
+    }
+    .method-tab:hover, .method-tab.active {
+        border-color: #4f46e5;
+        color: #4f46e5;
+        background: #f0f0ff;
+    }
+    .icon-badge {
+        width: 40px; height: 40px;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 10px;
+        background: #f0f0ff;
+        color: #4f46e5;
+        font-size: 18px;
+    }
+    #rzp-pay-btn {
+        background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        border: none;
+        border-radius: 16px;
+        color: white;
+        font-size: 17px;
+        font-weight: 700;
+        padding: 18px;
+        width: 100%;
+        cursor: pointer;
+        transition: all 0.3s;
+        box-shadow: 0 8px 25px rgba(79,70,229,0.4);
+    }
+    #rzp-pay-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 35px rgba(79,70,229,0.5);
+    }
+    .trust-badges {
+        display: flex; gap: 12px; flex-wrap: wrap;
+        align-items: center; justify-content: center;
+    }
+    .trust-badge {
+        background: #f8fafc; border-radius: 8px;
+        padding: 8px 14px; font-size: 12px;
+        font-weight: 600; color: #64748b;
+        border: 1px solid #e2e8f0;
+        display: flex; align-items: center; gap: 6px;
+    }
+</style>
+
+<div class="row justify-content-center py-5">
+    <div class="col-md-5">
+        <div class="payment-card">
+            <!-- Header -->
+            <div class="payment-header">
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div style="width:48px;height:48px;background:rgba(255,255,255,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;">
+                        <i class="fa-solid fa-layer-group fs-4"></i>
+                    </div>
+                    <div>
+                        <div style="font-size:13px;opacity:0.75;">Payment to</div>
+                        <div class="fw-bold fs-5">LocalPros Marketplace</div>
+                    </div>
+                    <div class="ms-auto">
+                        <i class="fa-solid fa-lock fs-5 opacity-75"></i>
+                        <div style="font-size:11px;opacity:0.65;">Secured</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-end">
+                    <div>
+                        <div style="font-size:13px;opacity:0.75;">Total Amount</div>
+                        <div class="fw-bold" style="font-size:38px;letter-spacing:-1px;">₹{{ booking.total_amount|floatformat:"0" }}</div>
+                    </div>
+                    <div class="text-end">
+                        <div style="font-size:12px;opacity:0.7;">Booking ID</div>
+                        <div style="font-size:13px;font-weight:600;opacity:0.9;">#{{ booking.id }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Body -->
+            <div class="payment-body">
+                <!-- Order Summary -->
+                <div class="mb-5">
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:#f8fafc;">
+                        <div class="icon-badge"><i class="fa-solid fa-wrench"></i></div>
+                        <div class="flex-grow-1">
+                            <div class="fw-bold" style="font-size:14px;">{{ booking.service.name }}</div>
+                            <div class="text-muted" style="font-size:12px;">by {{ booking.provider.business_name }}</div>
+                        </div>
+                        <div class="fw-bold text-primary">₹{{ booking.service.price|floatformat:"0" }}</div>
+                    </div>
+                    <div class="d-flex justify-content-between px-2 mt-3 text-muted" style="font-size:13px;">
+                        <span>Verification Fee</span>
+                        <span>+ ₹{{ booking.booking_fee|floatformat:"0" }}</span>
+                    </div>
+                    <hr class="my-3">
+                    <div class="d-flex justify-content-between px-2 fw-bold">
+                        <span>Total Payable</span>
+                        <span class="text-primary">₹{{ booking.total_amount|floatformat:"0" }}</span>
+                    </div>
+                </div>
+
+                <!-- Payment Method Tabs -->
+                <div class="mb-4">
+                    <div style="font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">
+                        Choose Payment Method
+                    </div>
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button class="method-tab active"><i class="fa-solid fa-credit-card me-2"></i>Cards</button>
+                        <button class="method-tab"><i class="fa-solid fa-mobile-screen me-2"></i>UPI</button>
+                        <button class="method-tab"><i class="fa-solid fa-building-columns me-2"></i>Net Banking</button>
+                        <button class="method-tab"><i class="fa-solid fa-wallet me-2"></i>Wallets</button>
+                    </div>
+                </div>
+
+                <!-- Pay Button -->
+                <button id="rzp-pay-btn">
+                    <i class="fa-solid fa-lock me-2"></i> Pay Securely ₹{{ booking.total_amount|floatformat:"0" }}
+                </button>
+
+                <!-- Trust Badges -->
+                <div class="trust-badges mt-4">
+                    <span class="trust-badge"><i class="fa-brands fa-cc-visa fs-5 text-primary"></i> Visa</span>
+                    <span class="trust-badge"><i class="fa-brands fa-cc-mastercard fs-5 text-danger"></i> Mastercard</span>
+                    <span class="trust-badge"><i class="fa-solid fa-rupee-sign"></i> UPI</span>
+                    <span class="trust-badge"><i class="fa-solid fa-shield-check text-success"></i> 256-bit SSL</span>
+                </div>
+                <p class="text-center text-muted mt-3 mb-0" style="font-size:11px;">
+                    Powered by Razorpay &bull; All transactions are 100% secure &amp; encrypted
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden form to POST back to Django after payment -->
+<form action="{% url 'payment_success_view' booking.id %}" method="POST" id="payment-success-form">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_payment_id"  id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_order_id"    id="razorpay_order_id"    value="{{ razorpay_order_id }}">
+    <input type="hidden" name="razorpay_signature"   id="razorpay_signature">
+</form>
+
+<!-- Razorpay Checkout JS -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    // Activate payment method tab highlighting
+    document.querySelectorAll('.method-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.method-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    var options = {
+        "key":         "{{ razorpay_key_id }}",
+        "amount":      "{{ amount_in_paise }}",
+        "currency":    "{{ currency }}",
+        "name":        "LocalPros Marketplace",
+        "description": "{{ booking.service.name }}",
+        "image":       "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
+        "order_id":    "{{ razorpay_order_id }}",
+        "theme":       { "color": "#4f46e5" },
+        "prefill": {
+            "name":    "{{ user.get_full_name|default:user.username }}",
+            "email":   "{{ user.email }}",
+        },
+        "handler": function (response) {
+            document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+            document.getElementById('razorpay_order_id').value   = response.razorpay_order_id;
+            document.getElementById('razorpay_signature').value  = response.razorpay_signature;
+
+            // Show processing overlay
+            document.getElementById('rzp-pay-btn').innerHTML =
+                '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Confirming Payment...';
+            document.getElementById('rzp-pay-btn').disabled = true;
+
+            document.getElementById('payment-success-form').submit();
+        },
+        "modal": {
+            "ondismiss": function() {
+                document.getElementById('rzp-pay-btn').innerHTML =
+                    '<i class="fa-solid fa-lock me-2"></i> Pay Securely ₹{{ booking.total_amount|floatformat:"0" }}';
+            }
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+
+    rzp1.on('payment.failed', function(response) {
+        alert('Payment failed: ' + response.error.description +
+              '\nReason: ' + response.error.reason);
+    });
+
+    document.getElementById('rzp-pay-btn').addEventListener('click', function(e) {
+        e.preventDefault();
+        rzp1.open();
+    });
+</script>
+{% endblock %}
