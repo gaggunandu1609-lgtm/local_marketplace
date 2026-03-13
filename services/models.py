@@ -29,6 +29,7 @@ class ServiceProvider(models.Model):
         ('Offline', 'Offline'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='provider_profile')
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='providers')
     business_name = models.CharField(max_length=200)
     profile_photo = models.ImageField(upload_to='providers/', blank=True, null=True)
     description = models.TextField(blank=True)
@@ -43,6 +44,23 @@ class ServiceProvider(models.Model):
     verified = models.BooleanField(default=False)
     availability = models.CharField(max_length=20, choices=AVAILABILITY_CHOICES, default='Available')
     registration_date = models.DateField(auto_now_add=True)
+
+    def average_rating(self):
+        from reviews.models import Review
+        # Get all services by this provider
+        services = self.services.all()
+        # Get all reviews for all those services
+        reviews = Review.objects.filter(service__in=services)
+        if reviews.exists():
+            import django.db.models as db_models
+            return reviews.aggregate(db_models.Avg('rating'))['rating__avg']
+        return 0.0
+
+    def total_reviews(self):
+        from reviews.models import Review
+        # Get all services by this provider
+        services = self.services.all()
+        return Review.objects.filter(service__in=services).count()
 
     def __str__(self):
         return self.business_name
@@ -62,6 +80,7 @@ class Service(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='services/', blank=True, null=True)
+    portfolio_images = models.ImageField(upload_to="portfolio/", blank=True, null=True)
     city = models.CharField(max_length=100, blank=True)
     area = models.CharField(max_length=100, blank=True)
     address = models.TextField(blank=True)
@@ -73,7 +92,7 @@ class Service(models.Model):
         # Get reviews for this service
         reviews = Review.objects.filter(service=self)
         if reviews.exists():
-            import django.db.models as db_models
+            from django.db import models as db_models
             return reviews.aggregate(db_models.Avg('rating'))['rating__avg']
         return 0.0
 

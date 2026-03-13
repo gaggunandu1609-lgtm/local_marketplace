@@ -32,7 +32,18 @@
                 </div>
                 <div class="mb-4">
                     <label class="form-label fw-600">Display Image</label>
-                    <input type="file" name="image" class="form-control bg-light border-0 py-3 rounded-4">
+                    <input type="file" name="image" class="form-control bg-light border-0 py-3 rounded-4" accept="image/*">
+                    {% if service.image %}
+                    <div class="mt-2 small text-muted"><i class="fa-solid fa-check-circle text-success"></i> Current: {{ service.image.name }}</div>
+                    {% endif %}
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-600">Portfolio Image <span class="text-muted fw-normal">(Category-specific work photo)</span></label>
+                    <input type="file" name="portfolio_images" class="form-control bg-light border-0 py-3 rounded-4" accept="image/*">
+                    <div class="form-text text-muted mt-1"><i class="fa-solid fa-circle-info me-1"></i> Upload a photo that best shows your work for this category (e.g. a completed plumbing job for Plumbing services)</div>
+                    {% if service.portfolio_images %}
+                    <div class="mt-2 small text-muted"><i class="fa-solid fa-check-circle text-success"></i> Current portfolio image saved</div>
+                    {% endif %}
                 </div>
                 
                 <div class="d-grid mt-5">

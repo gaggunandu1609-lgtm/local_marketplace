@@ -106,35 +106,8 @@
             <p>Join LocalPros and get started today</p>
         </div>
 
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-
-            <div class="form-group">
-                <label>Username</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-user"></i>
-                    {{ form.username|add_class:"form-control"|attr:"placeholder:Choose a username" }}
-                </div>
-                {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
-            </div>
-
-            <div class="form-group">
-                <label>Email Address</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-envelope"></i>
-                    {{ form.email|add_class:"form-control"|attr:"placeholder:name@example.com" }}
-                </div>
-                {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
-            </div>
-
-            <div class="form-group">
-                <label>Password</label>
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-lock"></i>
-                    {{ form.password|add_class:"form-control"|attr:"placeholder:Create a secret password" }}
-                </div>
-                {% if form.password.errors %}<div class="text-danger small mt-1">{{ form.password.errors }}</div>{% endif %}
-            </div>
 
             <div class="form-group">
                 <label>Register As</label>
@@ -145,10 +118,142 @@
                 {% if form.role.errors %}<div class="text-danger small mt-1">{{ form.role.errors }}</div>{% endif %}
             </div>
 
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-user"></i>
+                            {{ form.username|add_class:"form-control"|attr:"placeholder:Choose a username" }}
+                        </div>
+                        {% if form.username.errors %}<div class="text-danger small mt-1">{{ form.username.errors }}</div>{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            {{ form.email|add_class:"form-control"|attr:"placeholder:name@example.com" }}
+                        </div>
+                        {% if form.email.errors %}<div class="text-danger small mt-1">{{ form.email.errors }}</div>{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            {{ form.password|add_class:"form-control"|attr:"placeholder:Create a secret password" }}
+                        </div>
+                        {% if form.password.errors %}<div class="text-danger small mt-1">{{ form.password.errors }}</div>{% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            {{ form.confirm_password|add_class:"form-control"|attr:"placeholder:Confirm password" }}
+                        </div>
+                        {% if form.confirm_password.errors %}<div class="text-danger small mt-1">{{ form.confirm_password.errors }}</div>{% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Provider Fields (Hidden by Default) -->
+            <div id="provider-fields" style="display: none; background: rgba(79, 70, 229, 0.05); padding: 20px; border-radius: 16px; margin-bottom: 20px; border: 1px dashed rgba(79, 70, 229, 0.3);">
+                <h5 class="fw-bold mb-3" style="font-size: 1rem; color: var(--primary);"><i class="fa-solid fa-briefcase me-2"></i>Provider Details</h5>
+                
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-id-card"></i>
+                        {{ form.full_name|add_class:"form-control" }}
+                    </div>
+                    {% if form.full_name.errors %}<div class="text-danger small mt-1">{{ form.full_name.errors }}</div>{% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-phone"></i>
+                                {{ form.phone_number|add_class:"form-control" }}
+                            </div>
+                            {% if form.phone_number.errors %}<div class="text-danger small mt-1">{{ form.phone_number.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Service Category</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-tags"></i>
+                                {{ form.category|add_class:"form-select" }}
+                            </div>
+                            {% if form.category.errors %}<div class="text-danger small mt-1">{{ form.category.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>City / Location</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-location-dot"></i>
+                                {{ form.city|add_class:"form-select" }}
+                            </div>
+                            {% if form.city.errors %}<div class="text-danger small mt-1">{{ form.city.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Profile Photo</label>
+                            <div class="input-wrapper">
+                                <i class="fa-solid fa-camera"></i>
+                                {{ form.profile_photo|add_class:"form-control"|attr:"style:padding-left: 45px;" }}
+                            </div>
+                            {% if form.profile_photo.errors %}<div class="text-danger small mt-1">{{ form.profile_photo.errors }}</div>{% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group mb-0">
+                    <label>Short Bio / Experience</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-pen" style="top: 25px;"></i>
+                        {{ form.bio|add_class:"form-control" }}
+                    </div>
+                    {% if form.bio.errors %}<div class="text-danger small mt-1">{{ form.bio.errors }}</div>{% endif %}
+                </div>
+            </div>
+
             <button type="submit" class="btn" style="width: 100%; font-size: 1.1rem; padding: 14px; margin-top: 10px;">
                 Create Account
             </button>
         </form>
+
+        <script>
+            function toggleProviderFields() {
+                var roleSelect = document.getElementById('id_role');
+                var providerFields = document.getElementById('provider-fields');
+                if (roleSelect && roleSelect.value === 'provider') {
+                    providerFields.style.display = 'block';
+                } else {
+                    providerFields.style.display = 'none';
+                }
+            }
+            
+            // Run on load
+            document.addEventListener("DOMContentLoaded", function() {
+                toggleProviderFields();
+            });
+        </script>
 
         <div class="auth-footer">
             Already have an account? <a href="/login/">Login here</a>

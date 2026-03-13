@@ -7,8 +7,8 @@
         <table style="width: 100%; border-collapse: collapse;">
             <thead>
                 <tr style="text-align: left; border-bottom: 2px solid rgba(0,0,0,0.05);">
-                    <th style="padding: 15px;">Professional</th>
                     <th style="padding: 15px;">Service</th>
+                    <th style="padding: 15px;">Provider</th>
                     <th style="padding: 15px;">Date</th>
                     <th style="padding: 15px;">Status</th>
                     <th style="padding: 15px;">Amount</th>
@@ -18,42 +18,22 @@
             <tbody>
                 {% for booking in bookings %}
                 <tr style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-                    <td style="padding: 15px;">{{ booking.service.full_name }}</td>
-                    <td style="padding: 15px;">{{ booking.service.service_category }}</td>
-                    <td style="padding: 15px;">{{ booking.booking_date|default:"Not set" }}</td>
+                    <td style="padding: 15px; font-weight: 600;">{{ booking.service.name }}</td>
+                    <td style="padding: 15px;">{{ booking.service.category.name }}</td>
+                    <td style="padding: 15px;">{{ booking.booking_date|date:"d M Y" }}</td>
                     <td style="padding: 15px;">
-                        <span class="badge" style="background: rgba(79, 70, 229, 0.1); color: var(--primary);">{{ booking.status }}</span>
+                        <span class="badge" style="background: rgba(79, 70, 229, 0.1); color: var(--primary);">{{ booking.status|title }}</span>
                     </td>
                     <td style="padding: 15px;">₹{{ booking.total_amount }}</td>
                     <td style="padding: 15px;">
-                        {% if booking.status == 'Completed' %}
-                            {% if booking.review %}
-                                <div style="color: #fbbf24;"><i class="fa-solid fa-star"></i> {{ booking.review.rating }}/5</div>
+                        {% if booking.status == 'completed' %}
+                            {% if booking.review_details %}
+                                <div style="color: #fbbf24;"><i class="fa-solid fa-star"></i> {{ booking.review_details.rating }}/5</div>
                             {% else %}
-                                <button type="button" class="btn" style="padding: 5px 12px; font-size: 0.8rem;" onclick="document.getElementById('review-form-{{ booking.id }}').style.display = 'block'">Rate Now</button>
-                                <div id="review-form-{{ booking.id }}" style="display: none; position: absolute; z-index: 100; background: white; padding: 20px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 250px;">
-                                    <form method="POST" action="{% url 'submit_review' booking.id %}">
-                                        {% csrf_token %}
-                                        <div class="mb-2">
-                                            <label style="font-size: 0.8rem; font-weight: 600;">Rating</label>
-                                            <select name="rating" class="form-select" style="padding: 5px; font-size: 0.9rem;">
-                                                <option value="5">5 - Excellent</option>
-                                                <option value="4">4 - Very Good</option>
-                                                <option value="3">3 - Good</option>
-                                                <option value="2">2 - Fair</option>
-                                                <option value="1">1 - Poor</option>
-                                            </select>
-                                        </div>
-                                        <div class="mb-2">
-                                            <textarea name="comment" placeholder="What did you think?" style="width: 100%; border-radius: 8px; border: 1px solid #ddd; padding: 5px; font-size: 0.85rem;" rows="2" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn" style="width: 100%; padding: 5px;">Submit</button>
-                                        <button type="button" class="btn btn-outline" style="width: 100%; padding: 5px; margin-top: 5px; border-color: #ddd; color: #666 !important;" onclick="document.getElementById('review-form-{{ booking.id }}').style.display = 'none'">Cancel</button>
-                                    </form>
-                                </div>
+                                <a href="{% url 'submit_review' booking.id %}" class="btn" style="padding: 5px 12px; font-size: 0.8rem;">Rate Now</a>
                             {% endif %}
                         {% else %}
-                            <span style="color: var(--text-muted); font-size: 0.8rem;">Pending</span>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;">—</span>
                         {% endif %}
                     </td>
                 </tr>

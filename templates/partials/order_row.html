@@ -1,0 +1,68 @@
+<tr hx-target="this" hx-swap="outerHTML">
+    <td class="px-4 py-4 fw-bold">
+        <div class="d-flex align-items-center">
+            {% if booking.service.image %}
+                <img src="{{ booking.service.image.url }}" class="rounded me-3 shadow-sm" style="width: 50px; height: 50px; object-fit: cover;">
+            {% else %}
+                <div class="bg-light rounded me-3 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                    <i class="fa-solid fa-wrench text-muted opacity-25"></i>
+                </div>
+            {% endif %}
+            <div>
+                {{ booking.service.name }}<br>
+                <small class="text-primary fw-600">{{ booking.service.category.name }}</small>
+            </div>
+        </div>
+    </td>
+    <td class="py-4">
+        <div class="fw-bold">{{ booking.provider.business_name }}</div>
+        <div class="small text-muted"><i class="fa-solid fa-location-dot text-danger x-small"></i> {{ booking.service.city|default:booking.service.area }}</div>
+    </td>
+    <td class="py-4">
+        <div class="small fw-bold">{{ booking.booking_date|date:"d M Y" }}</div>
+        {% if booking.booking_time %}
+        <div class="small text-muted">{{ booking.booking_time|time:"h:i A" }}</div>
+        {% endif %}
+    </td>
+    <td class="py-4 small text-muted" style="max-width: 150px;">
+        {{ booking.address|truncatechars:40 }}
+    </td>
+    <td class="py-4 text-center">
+        {% if booking.status == 'pending' %}
+            <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">Pending</span>
+        {% elif booking.status == 'accepted' %}
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">Accepted</span>
+        {% elif booking.status == 'in progress' %}
+            <span class="badge bg-info-subtle text-info px-3 py-2 rounded-pill">In Progress</span>
+        {% elif booking.status == 'completed' %}
+            <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Completed</span>
+        {% elif booking.status == 'cancelled' %}
+            <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">Cancelled</span>
+        {% else %}
+            <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">{{ booking.status|title }}</span>
+        {% endif %}
+        {% if booking.status == 'pending payment' %}
+            <div class="small text-muted mt-1"><i class="fa-solid fa-money-bill-wave"></i> Cash</div>
+        {% endif %}
+    </td>
+    <td class="py-4 text-center">
+        {% if booking.payment_method == 'cash' %}
+            <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1" style="font-size:11px;"><i class="fa-solid fa-money-bill-wave me-1"></i>Cash</span>
+        {% else %}
+            <span class="badge bg-primary-subtle text-primary rounded-pill px-2 py-1" style="font-size:11px;"><i class="fa-solid fa-credit-card me-1"></i>Online</span>
+        {% endif %}
+    </td>
+    <td class="py-4 fw-bold text-primary">₹{{ booking.total_amount }}</td>
+    <td class="px-4 py-4 text-end">
+        {% if booking.status == 'pending' or booking.status == 'accepted' %}
+            <button hx-post="{% url 'cancel_booking' booking.id %}"
+                    hx-confirm="Are you sure you want to cancel this booking?"
+                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+                    class="btn btn-outline-danger btn-sm py-2 px-3 rounded-pill shadow-none">Cancel</button>
+        {% elif booking.status == 'completed' and not booking.review_details %}
+            <a href="{% url 'submit_review' booking.id %}" class="btn btn-sm py-2 px-3 shadow-none">Rate Pro</a>
+        {% else %}
+            <a href="{% url 'service_detail' booking.service.id %}" class="btn btn-light btn-sm py-2 px-3 text-muted rounded-pill">Details</a>
+        {% endif %}
+    </td>
+</tr>

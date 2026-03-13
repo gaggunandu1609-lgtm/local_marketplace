@@ -6,13 +6,16 @@
         position: relative;
         padding: 120px 0;
         text-align: center;
-        background: #000; /* Fallback color */
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); /* Premium dark gradient fallback */
+        background: #000;
+        /* Fallback color */
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        /* Premium dark gradient fallback */
         border-radius: 40px;
         margin-bottom: 60px;
         overflow: hidden;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
+
     .hero-video {
         position: absolute;
         top: 0;
@@ -23,35 +26,40 @@
         opacity: 0.6;
         z-index: 1;
     }
+
     .hero-overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
         z-index: 2;
     }
+
     .hero-content {
         position: relative;
         z-index: 3;
         color: white;
     }
+
     .hero-section h1 {
         font-size: 4.5rem;
         font-weight: 800;
         letter-spacing: -2px;
         margin-bottom: 20px;
         color: #fff;
-        text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
+
     .hero-section p {
         font-size: 1.4rem;
         color: rgba(255, 255, 255, 0.9);
         max-width: 700px;
         margin: 0 auto 40px auto;
-        text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
+
     .search-main {
         max-width: 700px;
         margin: 0 auto;
@@ -63,18 +71,21 @@
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
+
     .search-main input {
         background: white !important;
         border-radius: 16px !important;
         height: 60px;
         font-size: 1.1rem;
     }
+
     .search-main button {
         border-radius: 16px;
         padding: 0 40px;
         font-weight: 600;
         font-size: 1.1rem;
     }
+
     .category-card {
         padding: 30px;
         text-align: center;
@@ -88,22 +99,26 @@
         display: block;
         height: 100%;
     }
+
     .category-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         border-color: var(--primary);
     }
+
     .category-icon {
         font-size: 2.5rem;
         color: var(--primary);
         margin-bottom: 15px;
     }
+
     .section-title {
         font-size: 2rem;
         font-weight: 700;
         margin-bottom: 40px;
         position: relative;
     }
+
     .section-title::after {
         content: '';
         position: absolute;
@@ -121,16 +136,25 @@
         <div class="hero-section" data-aos="zoom-out" data-aos-duration="1500">
             <!-- Background Video -->
             <video autoplay muted loop playsinline class="hero-video">
-                <source src="https://assets.mixkit.co/videos/preview/mixkit-handyman-repairing-a-sink-42866-large.mp4" type="video/mp4">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-handyman-repairing-a-sink-42866-large.mp4"
+                    type="video/mp4">
             </video>
             <div class="hero-overlay"></div>
-            
+
             <div class="hero-content">
                 <h1 data-aos="fade-up" data-aos-delay="200">Expert Help, <br>Just a Click Away.</h1>
-                <p data-aos="fade-up" data-aos-delay="400">From plumbing to photography, find the best local professionals for all your needs.</p>
-                <form action="{% url 'services' %}" method="get" class="search-main" data-aos="fade-up" data-aos-delay="600">
-                    <input type="text" name="q" class="form-control px-4 border-0" placeholder="What service are you looking for?">
-                    <button type="submit" class="btn px-4 py-3">Find Pros</button>
+                <p data-aos="fade-up" data-aos-delay="400">From plumbing to photography, find the best local
+                    professionals for all your needs.</p>
+                <form action="{% url 'services' %}" method="get" class="search-main" data-aos="fade-up"
+                    data-aos-delay="600">
+                    <input type="text" name="q" class="form-control px-4 border-0"
+                        placeholder="What service are you looking for?"
+                        style="border-radius: 16px 0 0 16px !important;">
+                    <div class="vr my-auto" style="height: 30px; width: 1px; background: #e2e8f0; opacity: 0.5;"></div>
+                    <input type="text" name="city" class="form-control px-4 border-0" placeholder="City"
+                        value="{{ current_city }}" style="border-radius: 0 !important; width: 15rem !important;">
+                    <button type="submit" class="btn px-4 py-3" style="border-radius: 0 16px 16px 0 !important;">Find
+                        Pros</button>
                 </form>
             </div>
         </div>
@@ -142,58 +166,80 @@
         <h2 class="section-title mx-auto text-center" style="display: table;">Popular Categories</h2>
     </div>
     {% if categories %}
-        {% for category in categories %}
-        <div class="col-md-2 col-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
-            <a href="{% url 'services' %}?category={{ category.id }}" class="category-card">
-                <div class="category-icon">
-                    <i class="{{ category.icon|default:'fa-solid fa-screwdriver-wrench' }}"></i>
-                </div>
-                <div class="fw-bold">{{ category.name }}</div>
-            </a>
-        </div>
-        {% endfor %}
+    {% for category in categories %}
+    <div class="col-md-2 col-6 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
+        <a href="{% url 'services' %}?category={{ category.id }}" class="category-card">
+            <div class="category-icon">
+                <i class="{{ category.icon|default:'fa-solid fa-screwdriver-wrench' }}"></i>
+            </div>
+            <div class="fw-bold text-truncate">{{ category.name }}</div>
+        </a>
+    </div>
+    {% endfor %}
     {% else %}
-        <div class="col-12 text-center text-muted">
-            <p>Categories will appear here once added in Admin.</p>
-        </div>
+    <div class="col-12 text-center text-muted">
+        <p>Categories will appear here once added in Admin.</p>
+    </div>
     {% endif %}
 </div>
 
 <div class="row mb-5">
     <div class="col-12 mb-4 d-flex justify-content-between align-items-center" data-aos="fade-right">
+        {% if is_local %}
+        <h2 class="section-title">Featured Services in {{ current_city }}</h2>
+        {% else %}
         <h2 class="section-title">Featured Services</h2>
-        <a href="{% url 'services' %}" class="text-primary fw-bold text-decoration-none">View All <i class="fa-solid fa-arrow-right-long ms-1"></i></a>
+        {% endif %}
+        <a href="{% url 'services' %}{% if current_city %}?city={{ current_city }}{% endif %}"
+            class="text-primary fw-bold text-decoration-none">View All <i
+                class="fa-solid fa-arrow-right-long ms-1"></i></a>
     </div>
-    
+
     {% for service in services %}
     <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter0|add:1 }}00">
-        <div class="glass-card h-100 p-0 overflow-hidden d-flex flex-column" style="border-radius: 24px; transition: all 0.4s ease;">
+        <div class="glass-card h-100 p-0 overflow-hidden d-flex flex-column"
+            style="border-radius: 24px; transition: all 0.4s ease;">
             <div class="position-relative overflow-hidden" style="height: 220px;">
                 {% if service.image %}
-                    <img src="{{ service.image.url }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s ease;">
+                <img src="{{ service.image.url }}" class="w-100 h-100"
+                    style="object-fit: cover; transition: transform 0.5s ease;">
                 {% else %}
-                    <div class="bg-light d-flex align-items-center justify-content-center h-100">
-                        <i class="fa-solid fa-image fa-3x text-muted opacity-25"></i>
-                    </div>
+                <div class="bg-light d-flex align-items-center justify-content-center h-100">
+                    <i class="fa-solid fa-image fa-3x text-muted opacity-25"></i>
+                </div>
                 {% endif %}
                 <div class="position-absolute top-0 end-0 m-3">
                     <div class="badge bg-white text-dark shadow-sm px-3 py-2 rounded-pill">
-                        <i class="fa-solid fa-star text-warning me-1"></i> {{ service.provider.rating }}
+                        <i class="fa-solid fa-star text-warning me-1"></i>
+                        {{service.average_rating|default:0.0|floatformat:1}} ({{service.total_reviews}})
                     </div>
                 </div>
             </div>
             <div class="p-4 flex-grow-1 d-flex flex-column">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="badge bg-soft-primary px-3 py-2 rounded-pill text-primary" style="background-color: rgba(79, 70, 229, 0.1); font-size: 0.75rem; font-weight: 700;">{{ service.category.name|upper }}</span>
+                    <span class="badge bg-soft-primary px-3 py-2 rounded-pill text-primary"
+                        style="background-color: rgba(79, 70, 229, 0.1); font-size: 0.75rem; font-weight: 700;">{{ service.category.name|upper }}</span>
                 </div>
                 <h4 class="fw-bold mb-2">{{ service.name }}</h4>
                 <p class="text-muted small mb-4">{{ service.description|truncatewords:15 }}</p>
-                <div class="d-flex justify-content-between align-items-end mt-auto">
-                    <div>
-                        <div class="small text-muted">Starts from</div>
-                        <div class="h4 fw-bold text-primary mb-0">₹{{ service.price }}</div>
+                <div class="mt-auto">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div class="small text-muted">Starts from</div>
+                            <div class="h4 fw-bold text-primary mb-0">₹{{ service.price }}</div>
+                        </div>
+                        <div class="small text-muted">
+                            <i class="fa-solid fa-user-check me-1"></i>{{ service.provider.business_name }}
+                        </div>
                     </div>
-                    <a href="{% url 'service_detail' service.id %}" class="btn py-2 px-4 shadow-none rounded-pill">View Deal</a>
+                    {% if user.is_authenticated and user.profile.role == 'provider' %}
+                    <a href="{% url 'service_detail' service.id %}" class="btn btn-outline-primary w-100 py-2 shadow-none rounded-pill">View Details</a>
+                    {% else %}
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'service_detail' service.id %}" class="btn btn-outline-primary flex-grow-1 py-2 shadow-none rounded-pill">Details</a>
+                        <a href="{% url 'book_service' service.id %}" class="btn flex-grow-1 py-2 shadow-none rounded-pill">Book Now</a>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -209,7 +255,8 @@
 <div class="row py-5 mt-5 bg-light rounded-5" data-aos="fade-up">
     <div class="col-md-6 p-5 d-flex flex-column justify-content-center">
         <h2 class="fw-bold mb-4" style="font-size: 2.5rem;">Don't just take <br>our word for it.</h2>
-        <p class="text-muted mb-5">See how Taskers around you are changing their lives and their communities by doing what they love.</p>
+        <p class="text-muted mb-5">See how Taskers around you are changing their lives and their communities by doing
+            what they love.</p>
         <div class="d-flex gap-4">
             <div class="text-center">
                 <div class="h2 fw-bold text-primary">200+</div>
@@ -226,7 +273,8 @@
         </div>
     </div>
     <div class="col-md-6 p-0 overflow-hidden" style="border-radius: 0 40px 40px 0;">
-        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop" class="w-100 h-100" style="object-fit: cover;">
+        <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?q=80&w=800&auto=format&fit=crop"
+            class="w-100 h-100" style="object-fit: cover;">
     </div>
 </div>
 

@@ -6,6 +6,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from dashboard.views import my_bookings
+from bookings.views import create_booking
+from accounts.views import custom_login
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -16,8 +18,10 @@ urlpatterns = [
     path("reviews/", include("reviews.urls")),
     path("tasks/", include("tasks.urls")),
     path("notifications/", include("notifications.urls")),
+    path("chat/", include("chat.urls")),
     path("my-orders/", my_bookings, name="my_orders"),
-    path("login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"),
+    path("book/<int:service_id>/", create_booking, name="book_service"),
+    path("login/", custom_login, name="login"),
     path("logout/", auth_views.LogoutView.as_view(next_page="home"), name="logout"),
 ]
 

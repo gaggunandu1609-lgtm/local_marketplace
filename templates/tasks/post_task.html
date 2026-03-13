@@ -7,20 +7,33 @@
             <div class="card-body p-5">
                 <h2 class="fw-bold mb-4">Post a Task</h2>
                 <p class="text-muted mb-4">Describe what you need help with and local pros will send you quotes.</p>
-                
+
                 <form method="POST">
                     {% csrf_token %}
-                    
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Task Title</label>
-                        <input type="text" name="title" class="form-control" placeholder="e.g. Fix leaking kitchen sink" required>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Task Title</label>
+                            <input type="text" name="title" class="form-control"
+                                placeholder="e.g. Fix leaking kitchen sink" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Service Category</label>
+                            <select name="category" class="form-select" required>
+                                <option value="">Select Category</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label class="form-label fw-bold">Description</label>
-                        <textarea name="description" class="form-control" rows="4" placeholder="Provide as much detail as possible..." required></textarea>
+                        <textarea name="description" class="form-control" rows="4"
+                            placeholder="Provide as much detail as possible..." required></textarea>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Budget (₹)</label>
@@ -31,23 +44,24 @@
                             <input type="date" name="preferred_date" class="form-control" required>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">City</label>
                             <select name="city" class="form-select" required>
                                 <option value="">Select a City</option>
                                 {% for city in cities %}
-                                    <option value="{{ city.id }}">{{ city.name }}, {{ city.state }}</option>
+                                <option value="{{ city.id }}">{{ city.name }}, {{ city.state }}</option>
                                 {% endfor %}
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Location Details</label>
-                            <input type="text" name="location_details" class="form-control" placeholder="e.g. Whitefield, Near Forum Mall" required>
+                            <input type="text" name="location_details" class="form-control"
+                                placeholder="e.g. Whitefield, Near Forum Mall" required>
                         </div>
                     </div>
-                    
+
                     <div class="d-grid mt-4">
                         <button type="submit" class="btn btn-primary btn-lg">Post Task & Get Quotes</button>
                     </div>

@@ -31,7 +31,7 @@ def create_booking(request, service_id):
             booking_time = None
 
         # Booking fee (convenience/verification fee)
-        booking_fee = 50.00
+        booking_fee = 10.00
         total_amount = float(service.price) + booking_fee
 
         booking = Booking.objects.create(
@@ -50,7 +50,7 @@ def create_booking(request, service_id):
         messages.info(request, "Booking saved! Please complete payment to confirm.")
         return redirect('booking_confirm', booking_id=booking.id)
 
-    return redirect('service_detail', service_id=service_id)
+    return render(request, "book_service.html", {"service": service})
 
 
 @login_required
@@ -63,6 +63,33 @@ def booking_confirm(request, booking_id):
 def simulate_payment(request, booking_id):
     """Initiates Razorpay payment checkout."""
     booking = get_object_or_404(Booking, id=booking_id, user=request.user)
+
+    if request.method == "POST":
+        payment_method = request.POST.get('payment_method', 'online')
+        booking.payment_method = payment_method
+        if payment_method == 'cash':
+            booking.status = 'pending payment'
+            booking.save()
+            messages.success(request, "Booking confirmed with Cash on Service!")
+            # Mark provider as Busy
+            provider = booking.provider
+            if provider:
+                provider.availability = 'Busy'
+                provider.save()
+                # Notify provider
+                Notification.objects.create(
+                    user=provider.user,
+                    title="💰 New Cash Booking!",
+                    message=(
+                        f"You have a new booking for '{booking.service.name}' "
+                        f"from {request.user.get_full_name() or request.user.username}. "
+                        f"Scheduled: {booking.booking_date}. Payment: Cash on Service."
+                    ),
+                    link=reverse('provider_dashboard')
+                )
+            return redirect('my_orders')
+        
+        booking.save()
 
     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
@@ -137,7 +164,7 @@ def payment_success_view(request, booking_id):
 
         if payment_verified:
             # Update booking status
-            booking.status = 'Confirmed'
+            booking.status = 'accepted'
             booking.save()
 
             # Mark provider as Busy

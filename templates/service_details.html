@@ -10,6 +10,7 @@
         border: 1px solid #f1f5f9;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
     }
+
     .service-image-large {
         width: 100%;
         height: 400px;
@@ -17,10 +18,12 @@
         border-radius: 30px;
         margin-bottom: 30px;
     }
+
     .booking-card {
         position: sticky;
         top: 100px;
     }
+
     .pro-profile {
         display: flex;
         align-items: center;
@@ -30,6 +33,7 @@
         border-radius: 20px;
         margin-bottom: 30px;
     }
+
     .review-item {
         padding: 25px;
         border-bottom: 1px solid #f1f5f9;
@@ -40,31 +44,35 @@
     <div class="col-lg-8">
         <div class="service-header">
             {% if service.image %}
-                <img src="{{ service.image.url }}" class="service-image-large shadow-sm">
+            <img src="{{ service.image.url }}" class="service-image-large shadow-sm">
             {% else %}
-                <div class="bg-light service-image-large d-flex align-items-center justify-content-center">
-                    <i class="fa-solid fa-screwdriver-wrench fa-5x text-muted opacity-25"></i>
-                </div>
+            <div class="bg-light service-image-large d-flex align-items-center justify-content-center">
+                <i class="fa-solid fa-screwdriver-wrench fa-5x text-muted opacity-25"></i>
+            </div>
             {% endif %}
-            
+
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <span class="badge bg-soft-primary px-3 py-2 rounded-pill text-primary" style="background-color: rgba(79, 70, 229, 0.1);">{{ service.category.name }}</span>
+                <span class="badge bg-soft-primary px-3 py-2 rounded-pill text-primary"
+                    style="background-color: rgba(79, 70, 229, 0.1);">{{ service.category.name }}</span>
                 <div class="rating-badge">
-                    <i class="fa-solid fa-star text-warning"></i> {{ service.average_rating|default:0.0|floatformat:1 }} ({{ service.total_reviews }} Reviews)
+                    <i class="fa-solid fa-star text-warning"></i> {{service.average_rating|default:0.0|floatformat:1}}
+                    ({{service.total_reviews}} Reviews)
                 </div>
             </div>
-            
+
             <h1 class="fw-800 mb-2">{{ service.name }}</h1>
             <div class="mb-4 text-warning">
                 {% for i in "12345"|make_list %}
-                    <i class="fa-solid fa-star {% if forloop.counter > service.average_rating %}text-muted opacity-25{% endif %}"></i>
+                <i
+                    class="fa-solid fa-star {% if forloop.counter > service.average_rating %}text-muted opacity-25{% endif %}"></i>
                 {% endfor %}
             </div>
             <p class="text-muted mb-5" style="font-size: 1.15rem; line-height: 1.7;">{{ service.description }}</p>
-            
+
             <h3 class="fw-bold mb-4">Service Provider</h3>
             <div class="pro-profile">
-                <div class="bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 60px; height: 60px; border-radius: 15px; font-size: 1.5rem;">
+                <div class="bg-primary text-white d-flex align-items-center justify-content-center fw-bold"
+                    style="width: 60px; height: 60px; border-radius: 15px; font-size: 1.5rem;">
                     {{ service.provider.business_name|slice:":1" }}
                 </div>
                 <div>
@@ -73,26 +81,151 @@
                     {% if service.address %}
                     <div class="small text-muted mt-1">{{ service.address }}</div>
                     {% endif %}
+                    <a href="{% url 'chat_view' service.provider.user.id %}"
+                        class="btn btn-sm btn-outline-primary rounded-pill mt-3 px-3">
+                        <i class="fa-solid fa-comment-dots me-1"></i> Chat with Pro
+                    </a>
                 </div>
             </div>
 
+            <div id="service-map" data-lat="{{service.provider.latitude|default:20.5937}}"
+                data-lon="{{service.provider.longitude|default:78.9629}}"
+                style="height: 300px; border-radius: 20px; margin-bottom: 30px; border: 1px solid #e2e8f0; z-index: 1;">
+            </div>
+
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var mapEl = document.getElementById('service-map');
+                    var lat = parseFloat(mapEl.getAttribute('data-lat'));
+                    var lon = parseFloat(mapEl.getAttribute('data-lon'));
+
+                    var map = L.map('service-map').setView([lat, lon], 13);
+
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map);
+
+                    L.marker([lat, lon]).addTo(map)
+                        .bindPopup('<b>{{service.provider.business_name}}</b><br>{{service.provider.area}}, {{service.provider.city_ref.name}}')
+                        .openPopup();
+                });
+            </script>
+
             <h3 class="fw-bold mb-4 mt-5">Service Portfolio</h3>
-            {% if service.provider.portfolio_images.all %}
+
+            {% comment %}
+            Portfolio images: show uploaded image if available,
+            otherwise auto-select category-specific stock photos.
+            {% endcomment %}
+
+            {% if service.portfolio_images %}
+            {# --- Uploaded portfolio image --- #}
             <div class="row g-3 mb-4">
-                {% for item in service.provider.portfolio_images.all %}
-                <div class="col-md-4">
-                    <div class="rounded-4 overflow-hidden shadow-sm" style="height: 150px;">
-                        <img src="{{ item.image.url }}" class="w-100 h-100" style="object-fit: cover; cursor: pointer;" 
-                             onclick="window.open(this.src, '_blank')" title="{{ item.caption }}">
+                <div class="col-12">
+                    <div class="rounded-4 overflow-hidden shadow-sm" style="max-height:300px;">
+                        <img src="{{ service.portfolio_images.url }}" class="w-100" style="object-fit:cover;cursor:pointer;max-height:300px;"
+                            onclick="window.open(this.src,'_blank')" title="{{ service.name }} – Portfolio Image">
                     </div>
                 </div>
-                {% endfor %}
             </div>
+
             {% else %}
-            <div class="p-4 bg-light rounded-4 text-center mb-4">
-                <p class="text-muted mb-0">No portfolio images added yet.</p>
+            {# --- Category-specific stock photos fallback --- #}
+            {% with cat=service.category.name|lower %}
+            <div class="row g-3 mb-4">
+
+                {# PLUMBING / PLUMBER #}
+                {% if "plumb" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/plumbing,pipe?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Plumbing work"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/plumbing,repair?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Pipe repair"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/plumber,bathroom?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Bathroom plumbing"></div></div>
+
+                {# ELECTRICIAN / ELECTRICAL #}
+                {% elif "electr" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/electrician,wiring?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Electrical wiring"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/electrical,panel?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Electrical panel"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/electricity,repair?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Electrical repair"></div></div>
+
+                {# CLEANING / HOME CLEANER #}
+                {% elif "clean" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/house,cleaning?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="House cleaning"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/deep,cleaning?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Deep cleaning"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/kitchen,cleaning?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Kitchen cleaning"></div></div>
+
+                {# CARPENTRY / CARPENTER #}
+                {% elif "carp" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/carpentry,wood?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Carpentry"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/woodwork,furniture?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Woodwork"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/carpenter,workshop?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Carpenter at work"></div></div>
+
+                {# PAINTING / PAINTER #}
+                {% elif "paint" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/house,painting?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="House painting"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/wall,painting?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Wall painting"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/interior,painting?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Interior painting"></div></div>
+
+                {# APPLIANCE / AC REPAIR #}
+                {% elif "appliance" in cat or "ac" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/appliance,repair?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Appliance repair"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/air,conditioner?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="AC servicing"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/hvac,technician?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="HVAC repair"></div></div>
+
+                {# GARDENING / GARDENER #}
+                {% elif "garden" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/garden,landscaping?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Gardening"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/lawn,garden?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Lawn care"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/plants,pruning?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Plant pruning"></div></div>
+
+                {# PHOTOGRAPHER #}
+                {% elif "photo" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/photographer,camera?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Photography"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/photography,portrait?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Portrait photography"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/wedding,photography?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Wedding photography"></div></div>
+
+                {# BIKE MECHANIC #}
+                {% elif "bike" in cat or "mechanic" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/motorcycle,mechanic?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Bike mechanic"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/motorcycle,repair?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Motorcycle repair"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/bike,service?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Bike service"></div></div>
+
+                {# BEAUTICIAN / SALON #}
+                {% elif "beauty" in cat or "beautician" in cat or "salon" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/beauty,salon?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Beauty salon"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/hair,styling?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Hair styling"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/makeup,beauty?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Makeup service"></div></div>
+
+                {# LAPTOP / COMPUTER REPAIR #}
+                {% elif "laptop" in cat or "computer" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/laptop,repair?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Laptop repair"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/computer,technician?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Computer repair"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/electronics,repair?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Electronics repair"></div></div>
+
+                {# HOME TUTOR #}
+                {% elif "tutor" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/tutoring,study?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Home tutoring"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/teacher,student?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Teaching"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/education,learning?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Education"></div></div>
+
+                {# PEST CONTROL #}
+                {% elif "pest" in cat %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/pest,control?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Pest control"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/exterminator,spray?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Fumigation"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/home,fumigation?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Home pest service"></div></div>
+
+                {# DEFAULT FALLBACK — uses service name as keyword #}
+                {% else %}
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/professional,service?lock=1" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Professional service"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/handyman,work?lock=2" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Expert at work"></div></div>
+                <div class="col-md-4"><div class="rounded-4 overflow-hidden shadow-sm" style="height:160px;"><img src="https://loremflickr.com/600/400/home,service?lock=3" class="w-100 h-100" style="object-fit:cover;" loading="lazy" alt="Home service"></div></div>
+                {% endif %}
+
             </div>
+            <p class="small text-muted"><i class="fa-solid fa-images me-1 text-primary"></i> Live portfolio photos matched to this service category.</p>
+            {% endwith %}
             {% endif %}
+
 
             <h3 class="fw-bold mb-4 mt-5">Customer Reviews</h3>
             <div class="reviews-list">
@@ -102,7 +235,8 @@
                         <div class="fw-bold">{{ review.user.username }}</div>
                         <div class="text-warning small">
                             {% for i in "12345"|make_list %}
-                                <i class="fa-solid fa-star {% if forloop.counter > review.rating %}text-muted opacity-25{% endif %}"></i>
+                            <i
+                                class="fa-solid fa-star {% if forloop.counter > review.rating %}text-muted opacity-25{% endif %}"></i>
                             {% endfor %}
                         </div>
                     </div>
@@ -124,35 +258,44 @@
                 <span class="text-muted">Service Price</span>
                 <span class="fw-bold h4 mb-0">₹{{ service.price }}</span>
             </div>
-            
-            <form action="{% url 'create_booking' service.id %}" method="POST">
-                {% csrf_token %}
+
+            <form action="{% url 'book_service' service.id %}" method="GET">
                 <div class="mb-4">
                     <label class="form-label small fw-bold">Select Date & Time</label>
-                    <input type="datetime-local" name="booking_date" class="form-control bg-light border-0 py-3 rounded-4" required>
+                    <input type="datetime-local" name="booking_date"
+                        class="form-control bg-light border-0 py-3 rounded-4" required>
                 </div>
                 <div class="mb-4">
                     <label class="form-label small fw-bold">Service Address</label>
-                    <textarea name="address" class="form-control bg-light border-0 py-3 rounded-4" rows="2" placeholder="Where should the pro arrive?" required></textarea>
+                    <textarea name="address" class="form-control bg-light border-0 py-3 rounded-4" rows="2"
+                        placeholder="Where should the pro arrive?" required></textarea>
                 </div>
                 <div class="mb-4">
                     <label class="form-label small fw-bold">Requirement Details</label>
-                    <textarea name="description" class="form-control bg-light border-0 py-3 rounded-4" rows="3" placeholder="e.g. Any specific issues or preferences?"></textarea>
+                    <textarea name="description" class="form-control bg-light border-0 py-3 rounded-4" rows="3"
+                        placeholder="e.g. Any specific issues or preferences?"></textarea>
                 </div>
                 <div class="p-3 bg-light rounded-4 mb-4">
                     <div class="d-flex justify-content-between small mb-2">
                         <span>Platform Booking Fee</span>
-                        <span>₹50.00</span>
+                        <span>₹10.00</span>
                     </div>
                     <div class="d-flex justify-content-between fw-bold">
-                        <span>Due Now (Simulated)</span>
-                        <span class="text-primary">₹{{ service.price|add:50 }}</span>
+                        <span>Total Estimate</span>
+                        <span class="text-primary">₹{{ service.price|add:10 }}</span>
                     </div>
                 </div>
-                <button type="submit" class="btn w-100 py-3 shadow-none mt-2">Book Now & Pay Fee</button>
-            </form>
+                {% if user.profile.role != 'provider' %}
+                <a href="{% url 'book_service' service.id %}" class="btn w-100 py-3 shadow-none mt-2 d-block text-center">Book Now & Pay Fee</a>
+                {% else %}
+                <div class="alert alert-info border-0 shadow-sm rounded-4 text-center mt-3 py-3 mb-0">
+                    <i class="fa-solid fa-circle-info text-info fs-4 mb-2 d-block"></i>
+                    <span class="small fw-600">Providers cannot book services.</span>
+                </div>
+                {% endif %}
             <div class="text-center mt-3">
-                <p class="small text-muted"><i class="fa-solid fa-shield-check text-success me-1"></i> Secure payment & verified pros</p>
+                <p class="small text-muted"><i class="fa-solid fa-shield-check text-success me-1"></i> Secure payment &
+                    verified pros</p>
             </div>
         </div>
     </div>
@@ -165,27 +308,33 @@
     </div>
     {% for rel_service in related_services %}
     <div class="col-md-3 mb-4">
-        <div class="glass-card h-100 p-0 overflow-hidden d-flex flex-column" style="border-radius: 20px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);">
+        <div class="glass-card h-100 p-0 overflow-hidden d-flex flex-column"
+            style="border-radius: 20px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);">
             <div class="position-relative overflow-hidden" style="height: 160px;">
                 {% if rel_service.image %}
-                    <img src="{{ rel_service.image.url }}" class="w-100 h-100" style="object-fit: cover; transition: transform 0.5s;">
+                <img src="{{ rel_service.image.url }}" class="w-100 h-100"
+                    style="object-fit: cover; transition: transform 0.5s;">
                 {% else %}
-                    <div class="bg-light d-flex align-items-center justify-content-center h-100">
-                        <i class="fa-solid fa-image fa-2x text-muted opacity-25"></i>
-                    </div>
+                <div class="bg-light d-flex align-items-center justify-content-center h-100">
+                    <i class="fa-solid fa-image fa-2x text-muted opacity-25"></i>
+                </div>
                 {% endif %}
                 <div class="position-absolute top-0 end-0 m-2">
                     <span class="badge bg-white text-dark shadow-sm" style="border-radius: 10px; font-size: 0.7rem;">
-                        <i class="fa-solid fa-star text-warning me-1"></i> {{ rel_service.provider.rating }}
+                        <i class="fa-solid fa-star text-warning me-1"></i>
+                        {{rel_service.average_rating|default:0.0|floatformat:1}} ({{rel_service.total_reviews}})
                     </span>
                 </div>
             </div>
             <div class="p-3 flex-grow-1 d-flex flex-column">
-                <div class="small text-primary fw-700 mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">{{ rel_service.category.name|upper }}</div>
+                <div class="small text-primary fw-700 mb-1" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                    {{rel_service.category.name|upper}}</div>
                 <h6 class="fw-bold mb-2 text-dark">{{ rel_service.name }}</h6>
                 <div class="d-flex justify-content-between align-items-center mt-auto">
                     <div class="fw-bold text-primary">₹{{ rel_service.price }}</div>
-                    <a href="{% url 'service_detail' rel_service.id %}" class="btn btn-outline-primary btn-sm py-1 px-3 rounded-pill" style="font-size: 0.75rem;">Details</a>
+                    <a href="{% url 'service_detail' rel_service.id %}"
+                        class="btn btn-outline-primary btn-sm py-1 px-3 rounded-pill"
+                        style="font-size: 0.75rem;">Details</a>
                 </div>
             </div>
         </div>

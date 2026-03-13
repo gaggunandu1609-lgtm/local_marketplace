@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="fw-bold mb-4">Messages</h2>
+        <div class="glass-card p-0 overflow-hidden">
+            <div class="list-group list-group-flush">
+                {% for chat_user in chat_users %}
+                <a href="{% url 'chat_view' chat_user.id %}"
+                    class="list-group-item list-group-item-action p-4 border-0 border-bottom d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="bg-primary text-white d-flex align-items-center justify-content-center fw-bold rounded-circle"
+                            style="width: 55px; height: 55px; font-size: 1.2rem;">
+                            {{ chat_user.username|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1">{{ chat_user.username }}</h5>
+                            <p class="text-muted small mb-0">Click to view conversation</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-muted opacity-50"></i>
+                </a>
+                {% empty %}
+                <div class="text-center py-5">
+                    <i class="fa-solid fa-comments fa-3x text-muted opacity-25 mb-3"></i>
+                    <p class="text-muted">No conversations yet. Start chatting with a pro!</p>
+                    <a href="{% url 'services' %}" class="btn btn-sm px-4">Browse Services</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

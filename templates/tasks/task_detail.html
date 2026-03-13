@@ -10,10 +10,10 @@
                     <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">Open</span>
                     <span class="text-muted small"><i class="fa-regular fa-clock me-1"></i> Posted {{ task.created_at|timesince }} ago</span>
                 </div>
-                
+
                 <h5 class="fw-bold mb-3">Task Details</h5>
                 <p class="text-muted">{{ task.description }}</p>
-                
+
                 <hr class="text-muted opacity-25">
                 <ul class="list-unstyled mb-0 row">
                     <li class="col-md-6 mb-2"><strong>Location:</strong> {{ task.location_details }} ({{ task.city_ref.name }})</li>
@@ -21,51 +21,63 @@
                     <li class="col-md-6"><strong>Budget:</strong> ₹{{ task.budget }}</li>
                     <li class="col-md-6"><strong>Customer:</strong> {{ task.customer.username }}</li>
                 </ul>
+                {% if is_provider %}
+                <div class="mt-4">
+                    <a href="{% url 'chat_view' task.customer.id %}"
+                        class="btn btn-sm btn-outline-secondary rounded-pill">
+                        <i class="fa-solid fa-message me-1"></i> Chat with {{ task.customer.username }}
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
 
         {% if is_provider %}
-            <h4 class="fw-bold mb-3 mt-5 border-top pt-4">Submit a Quote</h4>
-            <div class="card shadow-sm border-0 rounded-4 p-4">
-                <form method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Your Offer Amount (₹)</label>
-                        <input type="number" name="proposed_price" class="form-control" required placeholder="Will you do it for less? Or is it more expensive?">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-bold">Message</label>
-                        <textarea name="message" class="form-control" rows="3" required placeholder="Why are you the right person? When can you start?"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary px-4">Send Quote</button>
-                </form>
-            </div>
+        <h4 class="fw-bold mb-3 mt-5 border-top pt-4">Submit a Quote</h4>
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Your Offer Amount (₹)</label>
+                    <input type="number" name="proposed_price" class="form-control" required
+                        placeholder="Will you do it for less? Or is it more expensive?">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Message</label>
+                    <textarea name="message" class="form-control" rows="3" required
+                        placeholder="Why are you the right person? When can you start?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary px-4">Send Quote</button>
+            </form>
+        </div>
         {% else %}
-            <h4 class="fw-bold mb-3 mt-5">Quotes from Providers ({{ quotes.count }})</h4>
-            {% for quote in quotes %}
-                <div class="card shadow-sm border-0 rounded-4 mb-3 p-4">
-                    <div class="d-flex justify-content-between mb-3">
-                        <div class="d-flex align-items-center gap-3">
-                            <div class="bg-primary text-white d-flex align-items-center justify-content-center fw-bold rounded-circle" style="width: 50px; height: 50px; font-size: 1.25rem;">
-                                {{ quote.provider.business_name|slice:":1" }}
-                            </div>
-                            <div>
-                                <h6 class="fw-bold mb-0">{{ quote.provider.business_name }}</h6>
-                                <div class="small text-warning">
-                                    <i class="fa-solid fa-star"></i> {{ quote.provider.rating }} ({{ quote.provider.total_jobs }} Jobs)
-                                </div>
-                            </div>
-                        </div>
-                        <h4 class="fw-bold text-success mb-0">₹{{ quote.proposed_price }}</h4>
+        <h4 class="fw-bold mb-3 mt-5">Quotes from Providers ({{ quotes.count }})</h4>
+        {% for quote in quotes %}
+        <div class="card shadow-sm border-0 rounded-4 mb-3 p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="bg-primary text-white d-flex align-items-center justify-content-center fw-bold rounded-circle"
+                        style="width: 50px; height: 50px; font-size: 1.25rem;">
+                        {{ quote.provider.business_name|slice:":1" }}
                     </div>
-                    <p class="text-muted small mb-3">"{{ quote.message }}"</p>
-                    <div class="text-end">
-                        <a href="#" class="btn btn-sm btn-outline-success">Accept & Book</a>
+                    <div>
+                        <h6 class="fw-bold mb-0">{{ quote.provider.business_name }}</h6>
+                        <div class="small text-warning">
+                            <i class="fa-solid fa-star"></i> {{ quote.provider.rating }} ({{ quote.provider.total_jobs }} Jobs)
+                        </div>
                     </div>
                 </div>
-            {% empty %}
-                <p class="text-muted">No quotes received yet. Providers are getting notified!</p>
-            {% endfor %}
+                <h4 class="fw-bold text-success mb-0">₹{{ quote.proposed_price }}</h4>
+            </div>
+            <p class="text-muted small mb-3">"{{ quote.message }}"</p>
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'chat_view' quote.provider.user.id %}" class="btn btn-sm btn-outline-primary">Chat</a>
+                <a href="{% url 'accept_quote' quote.id %}" class="btn btn-sm btn-outline-success">Accept & Book</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted">No quotes received yet. Providers are getting notified!</p>
+        {% endfor %}
         {% endif %}
     </div>
 </div>

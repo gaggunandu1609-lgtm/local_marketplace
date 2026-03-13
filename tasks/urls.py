@@ -6,4 +6,5 @@ urlpatterns = [
     path('list/', views.task_list, name='task_list'),
     path('my-tasks/', views.my_tasks, name='my_tasks'),
     path('<int:task_id>/', views.task_detail, name='task_detail'),
+    path('accept-quote/<int:quote_id>/', views.accept_quote, name='accept_quote'),
 ]

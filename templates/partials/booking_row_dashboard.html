@@ -1,0 +1,17 @@
+<tr>
+    <td class="px-4 py-4 fw-bold">{{ booking.service.name }}</td>
+    <td class="py-4">{{ booking.user.first_name }} {{ booking.user.last_name }} <br>
+        <small class="text-muted">
+            <a href="tel:{{ booking.user.profile.phone }}"><i class="fa-solid fa-phone"></i> {{ booking.user.profile.phone }}</a>
+        </small><br>
+        <small class="text-muted"><i class="fa-solid fa-location-dot"></i> {{ booking.address }}</small>
+    </td>
+    <td class="py-4 small">
+        {{ booking.booking_date|date:"d M Y" }}
+        {% if booking.booking_time %}
+        {{ booking.booking_time|time:"h:i A" }}
+        {% endif %}
+        {% if booking.description %}<br><small class="text-muted">Note: {{ booking.description }}</small>{% endif %}
+    </td>
+    {% include 'partials/booking_status_badge.html' with source='dashboard' %}
+</tr>

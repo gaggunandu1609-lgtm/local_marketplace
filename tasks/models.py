@@ -10,6 +10,7 @@ class Task(models.Model):
     ]
     
     customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posted_tasks")
+    category = models.ForeignKey('services.Category', on_delete=models.SET_NULL, null=True, related_name='tasks')
     title = models.CharField(max_length=200)
     description = models.TextField()
     budget = models.DecimalField(max_digits=10, decimal_places=2)

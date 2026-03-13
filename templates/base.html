@@ -1,33 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Local Marketplace - Find Pros Near You</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Google Fonts: Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- AOS Animation CSS -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    
+
     <!-- Animate.css for real-time notifications -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    
+
     <!-- HTMX for dynamic interactions without page reloads -->
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    
+
     <style>
         :root {
-            --primary: #4f46e5;       /* Indigo */
+            --primary: #4f46e5;
+            /* Indigo */
             --primary-hover: #4338ca;
-            --secondary: #10b981;     /* Emerald */
+            --secondary: #10b981;
+            /* Emerald */
             --bg-color: #f8fafc;
             --text-main: #1e293b;
             --text-muted: #64748b;
@@ -78,7 +81,7 @@
             gap: 10px;
             letter-spacing: -0.5px;
         }
-        
+
         .logo span {
             color: var(--text-main);
         }
@@ -89,7 +92,8 @@
             gap: 20px;
         }
 
-        .nav-links a, .nav-links button {
+        .nav-links a,
+        .nav-links button {
             color: var(--text-main);
             text-decoration: none;
             font-weight: 500;
@@ -104,7 +108,7 @@
         .nav-links a:not(.btn):hover {
             color: var(--primary);
         }
-        
+
         .nav-links a:not(.btn)::after {
             content: '';
             position: absolute;
@@ -115,7 +119,7 @@
             background-color: var(--primary);
             transition: width 0.3s ease;
         }
-        
+
         .nav-links a:not(.btn):hover::after {
             width: 100%;
         }
@@ -124,7 +128,8 @@
             background: var(--primary);
             color: white !important;
             padding: 10px 24px;
-            border-radius: 999px; /* Pill shape */
+            border-radius: 999px;
+            /* Pill shape */
             font-weight: 600;
             box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -135,14 +140,14 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(79, 70, 229, 0.23);
         }
-        
+
         .btn-outline {
             background: transparent;
             color: var(--primary) !important;
             border: 2px solid var(--primary);
             box-shadow: none;
         }
-        
+
         .btn-outline:hover {
             background: var(--primary);
             color: white !important;
@@ -165,7 +170,7 @@
             border-top: 1px solid #e2e8f0;
             margin-top: auto;
         }
-        
+
         .footer i {
             color: #ef4444;
         }
@@ -181,20 +186,37 @@
             padding: 30px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        .text-center { text-align: center; }
-        .mt-4 { margin-top: 1.5rem; }
-        .mb-4 { margin-bottom: 1.5rem; }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-4 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1.5rem;
+        }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @media (max-width: 768px) {
             .nav-links {
-                display: none; /* In a real app, add a hamburger menu */
+                display: none;
+                /* In a real app, add a hamburger menu */
             }
+
             .content {
                 padding: 20px 5%;
             }
@@ -204,33 +226,77 @@
 
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg">
-    <div class="container-fluid px-5">
-        <a href="/" class="logo">
-            <i class="fa-solid fa-layer-group"></i>
-            Local<span>Pros</span>
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav align-items-center gap-3">
-                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
-                {% if user.is_authenticated %}
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-5">
+            <a href="/" class="logo">
+                <i class="fa-solid fa-layer-group"></i>
+                Local<span>Pros</span> <small style="font-size: 10px; color: var(--primary);">V2</small>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center gap-3">
+                    <li class="nav-item me-lg-3">
+                        <div class="dropdown">
+                            <button class="nav-link dropdown-toggle d-flex align-items-center gap-1" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false"
+                                style="color: var(--primary); font-weight: 600;">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span id="current-location-display">{{ current_city }}</span>
+                            </button>
+                            <ul class="dropdown-menu shadow-lg border-0 mt-2"
+                                style="max-height: 350px; overflow-y: auto; border-radius: 16px; min-width: 200px;">
+                                <li>
+                                    <button class="dropdown-item py-2 d-flex align-items-center gap-2"
+                                        onclick="detectLocation()">
+                                        <i class="fa-solid fa-crosshairs text-primary"></i>
+                                        <span>Detect My Location</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li class="px-3 py-1"><small class="text-muted fw-bold">POPULAR CITIES</small></li>
+                                {% for c in db_cities %}<li><a class="dropdown-item py-2"
+                                        href="{% url 'services' %}?city={{ c.name }}">{{ c.name }}</a></li>{% endfor %}
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'services' %}">Services</a></li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link fw-600" href="{% url 'chat_list' %}">
+                            <i class="fa-solid fa-message me-1"></i> Messages
+                            <span hx-get="{% url 'unread_count' %}" hx-trigger="every 10s, load"
+                                hx-swap="outerHTML"></span>
+                        </a>
+                    </li>
                     {% if user.profile.role == 'provider' %}
-                        <li class="nav-item"><a class="nav-link fw-600" href="{% url 'provider_dashboard' %}"><i class="fa-solid fa-chart-line me-1"></i> Dashboard</a></li>
-                        <li class="nav-item"><a class="nav-link fw-600" href="{% url 'task_list' %}"><i class="fa-solid fa-clipboard-check me-1"></i> Open Tasks</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'provider_dashboard' %}"><i
+                                class="fa-solid fa-chart-line me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'provider_services' %}"><i
+                                class="fa-solid fa-toolbox me-1"></i> My Services</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'provider_bookings' %}"><i
+                                class="fa-solid fa-calendar-check me-1"></i> My Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'task_list' %}"><i
+                                class="fa-solid fa-clipboard-check me-1"></i> Open Tasks</a></li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link fw-600" href="{% url 'post_task' %}"><i class="fa-solid fa-plus me-1"></i> Post Task</a></li>
-                        <li class="nav-item"><a class="nav-link fw-600" href="{% url 'my_tasks' %}"><i class="fa-solid fa-list-check me-1"></i> My Tasks</a></li>
-                        <li class="nav-item"><a class="nav-link fw-600" href="{% url 'my_orders' %}"><i class="fa-solid fa-calendar-check me-1"></i> My Orders</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'post_task' %}"><i
+                                class="fa-solid fa-plus me-1"></i> Post Task</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'my_tasks' %}"><i
+                                class="fa-solid fa-list-check me-1"></i> My Tasks</a></li>
+                    <li class="nav-item"><a class="nav-link fw-600" href="{% url 'my_orders' %}"><i
+                                class="fa-solid fa-calendar-check me-1"></i> My Orders</a></li>
                     {% endif %}
                     <li class="nav-item">
                         <a href="{% url 'provider_dashboard' %}" class="nav-link position-relative px-2">
                             <i class="fa-solid fa-bell fs-5"></i>
-                            <span id="notification-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {% if unread_notifications_count == 0 %}d-none{% endif %}" style="font-size: 0.6rem;">
+                            <span id="notification-badge"
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {% if unread_notifications_count == 0 %}d-none{% endif %}"
+                                style="font-size: 0.6rem;">
                                 {{ unread_notifications_count }}
                             </span>
                         </a>
@@ -243,74 +309,121 @@
                             </button>
                         </form>
                     </li>
-                {% else %}
-                    <li class="nav-item"><a href="/login/" class="nav-link btn btn-outline px-4 py-2 mt-0">Login</a></li>
-                    <li class="nav-item"><a href="/accounts/register/" class="nav-link btn px-4 py-2 mt-0 text-white">Register</a></li>
-                {% endif %}
-            </ul>
+                    {% else %}
+                    <li class="nav-item"><a href="/login/" class="nav-link btn btn-outline px-4 py-2 mt-0">Login</a>
+                    </li>
+                    <li class="nav-item"><a href="/accounts/register/"
+                            class="nav-link btn px-4 py-2 mt-0 text-white">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<!-- PAGE CONTENT -->
-<main class="content">
-    <div class="container mt-4">
-        {% if messages %}
+    <!-- PAGE CONTENT -->
+    <main class="content">
+        <div class="container mt-4">
+            {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0 mb-4" role="alert" style="border-radius: 12px;">
-                    {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0 mb-4" role="alert"
+                style="border-radius: 12px;">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             {% endfor %}
-        {% endif %}
-        
-        {% block content %}
-        {% endblock %}
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <!-- Notification Toast Container -->
+    <div id="notification-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
     </div>
-</main>
 
-<!-- Notification Toast Container -->
-<div id="notification-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
-</div>
-
-<!-- Real-time Notification Listener (Polling every 3 seconds) -->
-{% if user.is_authenticated %}
-<div hx-get="{% url 'get_notifications' %}" 
-     hx-trigger="every 3s" 
-     hx-target="#notification-container" 
-     hx-swap="beforeend" 
-     style="display:none;">
-</div>
-{% endif %}
-
-<!-- FOOTER -->
-<footer class="footer">
-    <div class="container">
-        <p class="mb-0">© 2026 LocalPros Marketplace. Professional Services at your Doorstep. Built with <i class="fa-solid fa-heart"></i></p>
+    <!-- Real-time Notification Listener (Polling every 3 seconds) -->
+    {% if user.is_authenticated %}
+    <div hx-get="{% url 'get_notifications' %}" hx-trigger="every 3s" hx-target="#notification-container"
+        hx-swap="beforeend" style="display:none;">
     </div>
-</footer>
+    {% endif %}
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p class="mb-0">© 2026 LocalPros Marketplace. Professional Services at your Doorstep. Built with <i
+                    class="fa-solid fa-heart"></i></p>
+        </div>
+    </footer>
 
-<!-- AOS Animation JS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init({
-        duration: 800,
-        once: true,
-        offset: 50,
-    });
-    
-    // Smooth reinit for HTMX requests
-    document.body.addEventListener('htmx:afterSettle', function(evt) {
-        AOS.refresh();
-    });
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    document.body.addEventListener('htmx:configRequest', (event) => {
-        event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
-    });
-</script>
+    <!-- AOS Animation JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 50,
+        });
+
+        // Smooth reinit for HTMX requests
+        document.body.addEventListener('htmx:afterSettle', function (evt) {
+            AOS.refresh();
+        });
+
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+        });
+
+        function detectLocation() {
+            const display = document.getElementById('current-location-display');
+            const originalText = display.innerText;
+            display.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Detecting...';
+
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser");
+                display.innerText = originalText;
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    // Send to backend to resolve city
+                    fetch(`/detect-city/?lat=${lat}&lon=${lon}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.city) {
+                                display.innerText = data.city;
+                                // Refresh page to show local services if on services page or homepage
+                                if (window.location.pathname === '/' || window.location.pathname.includes('/services/')) {
+                                    window.location.reload();
+                                } else {
+                                    window.location.reload();
+                                }
+                            } else {
+                                display.innerText = originalText;
+                                alert("Could not detect city. Please select manually.");
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                            display.innerText = originalText;
+                        });
+                },
+                () => {
+                    display.innerText = originalText;
+                    alert("Unable to retrieve your location. Please check permissions.");
+                }
+            );
+        }
+    </script>
 
 </body>
+
 </html>

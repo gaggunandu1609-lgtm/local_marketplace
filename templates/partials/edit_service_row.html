@@ -1,0 +1,36 @@
+<tr id="service-row-{{ service.id }}">
+    <td colspan="6" class="p-4">
+        <form hx-post="{% url 'edit_service' service.id %}" 
+              hx-target="#service-row-{{ service.id }}" 
+              hx-swap="outerHTML" 
+              hx-encoding="multipart/form-data" 
+              class="glass-card p-4 border-primary" style="background: #f8fafc; border: 1px dashed var(--primary);">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label small fw-bold">Service Title</label>
+                    <input type="text" name="name" class="form-control form-control-sm" value="{{ service.name }}" required>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label small fw-bold">Category</label>
+                    <select name="category" class="form-select form-select-sm" required>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if service.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small fw-bold">Price (₹)</label>
+                    <input type="number" name="price" class="form-control form-control-sm" value="{{ service.price }}" required>
+                </div>
+                <div class="col-md-3 d-flex align-items-end gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm flex-grow-1">Save</button>
+                    <button type="button" hx-get="{% url 'edit_service' service.id %}?cancel=1" hx-target="#service-row-{{ service.id }}" hx-swap="outerHTML" class="btn btn-light btn-sm">Cancel</button>
+                </div>
+                <div class="col-12 mt-3 small text-muted">
+                    <i class="fa-solid fa-info-circle me-1"></i> For full edits (descriptions & images), please use the main edit page.
+                </div>
+            </div>
+        </form>
+    </td>
+</tr>

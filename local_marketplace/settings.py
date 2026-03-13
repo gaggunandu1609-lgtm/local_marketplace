@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_htmx',
     'tasks',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'notifications.context_processors.notification_count',
+                'services.context_processors.user_location',
             ],
         },
     },
@@ -137,6 +139,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 import os
 
 STATIC_URL = 'static/'
@@ -152,5 +159,10 @@ LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = 'login'
 
 # Razorpay Configuration
+# To use REAL keys: create a .env file in the project root with:
+#   RAZORPAY_KEY_ID=rzp_live_XXXXXXXXXX
+#   RAZORPAY_KEY_SECRET=your_actual_secret
+# Get your keys from: https://dashboard.razorpay.com/app/keys
+# For testing, use Test mode keys from Razorpay Dashboard
 RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_mock_key_123')
-RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'mock_secret_456')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'mock_secret_456')

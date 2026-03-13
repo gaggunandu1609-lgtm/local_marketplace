@@ -1,0 +1,46 @@
+<td class="py-4 text-center">
+    {% if booking.status == 'pending' %}
+        <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">Pending</span>
+    {% elif booking.status == 'accepted' %}
+        <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill">Accepted</span>
+    {% elif booking.status == 'in progress' %}
+        <span class="badge bg-info-subtle text-info px-3 py-2 rounded-pill">In Progress</span>
+    {% elif booking.status == 'pending payment' %}
+        <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill">Pending Payment</span>
+        <div class="small text-muted mt-1"><i class="fa-solid fa-money-bill-wave"></i> Cash</div>
+    {% elif booking.status == 'completed' %}
+        <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill">Completed</span>
+    {% elif booking.status == 'cancelled' %}
+        <span class="badge bg-danger-subtle text-danger px-3 py-2 rounded-pill">Cancelled</span>
+    {% else %}
+        <span class="badge bg-secondary-subtle text-secondary px-3 py-2 rounded-pill">{{ booking.status|title }}</span>
+    {% endif %}
+</td>
+<td class="px-4 py-4 text-end">
+    {% if booking.status == 'pending' %}
+    <button hx-post="{% url 'update_booking_status' booking.id 'accepted' %}?source={{ source|default:'dashboard' }}"
+        hx-target="closest tr"
+        hx-swap="outerHTML"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        class="btn btn-primary btn-sm px-3 shadow-none me-1">Accept</button>
+    <button hx-post="{% url 'update_booking_status' booking.id 'cancelled' %}?source={{ source|default:'dashboard' }}"
+        hx-target="closest tr"
+        hx-swap="outerHTML"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        class="btn btn-outline-danger btn-sm px-3 shadow-none">Reject</button>
+    {% elif booking.status == 'accepted' %}
+    <button hx-post="{% url 'update_booking_status' booking.id 'in progress' %}?source={{ source|default:'dashboard' }}"
+        hx-target="closest tr"
+        hx-swap="outerHTML"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        class="btn btn-info btn-sm px-3 shadow-none text-white">Mark In Progress</button>
+    {% elif booking.status == 'in progress' or booking.status == 'pending payment' %}
+    <button hx-post="{% url 'update_booking_status' booking.id 'completed' %}?source={{ source|default:'dashboard' }}"
+        hx-target="closest tr"
+        hx-swap="outerHTML"
+        hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'
+        class="btn btn-success btn-sm px-3 shadow-none">Mark Completed</button>
+    {% else %}
+    <span class="text-muted small">No actions</span>
+    {% endif %}
+</td>

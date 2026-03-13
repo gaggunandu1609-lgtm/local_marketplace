@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-8">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{% url 'provider_dashboard' %}" class="btn btn-light rounded-circle p-2 me-3 shadow-sm" style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;"><i class="fa-solid fa-arrow-left"></i></a>
+            <div>
+                <h2 class="fw-800 mb-0">My Profile</h2>
+                <p class="text-muted mb-0">Update your personal and professional details.</p>
+            </div>
+        </div>
+
+        <div class="glass-card shadow-sm border-0" style="background: white; border-radius: 20px; overflow: hidden;">
+            <form method="POST" enctype="multipart/form-data" class="p-4 p-md-5">
+                {% csrf_token %}
+                
+                <!-- Photo Upload Section -->
+                <div class="d-flex align-items-center mb-5 gap-4">
+                    <div class="position-relative">
+                        <div class="rounded-circle overflow-hidden shadow-sm" style="width: 100px; height: 100px; border: 3px solid var(--primary);">
+                            {% if provider.profile_photo %}
+                            <img src="{{ provider.profile_photo.url }}" class="w-100 h-100" style="object-fit: cover;" alt="Profile Photo">
+                            {% else %}
+                            <div class="w-100 h-100 bg-primary-subtle d-flex align-items-center justify-content-center">
+                                <i class="fa-solid fa-user fs-1 text-primary pb-1"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <label class="form-label fw-bold text-muted small">Update Profile Photo</label>
+                        <input type="file" name="profile_photo" class="form-control bg-light border-0 rounded-pilled" accept="image/*">
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3 border-bottom pb-2">Personal Details</h5>
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted">First Name</label>
+                        <input type="text" name="first_name" class="form-control bg-light py-2 px-3 border-0 rounded-3" value="{{ user.first_name }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted">Last Name</label>
+                        <input type="text" name="last_name" class="form-control bg-light py-2 px-3 border-0 rounded-3" value="{{ user.last_name }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted">Email <span class="badge bg-secondary ms-1">Read Only</span></label>
+                        <input type="email" class="form-control bg-light py-2 px-3 border-0 rounded-3 text-muted" value="{{ user.email }}" readonly>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold small text-muted">Phone Number</label>
+                        <input type="text" name="phone_number" class="form-control bg-light py-2 px-3 border-0 rounded-3" value="{{ provider.phone_number|default:user.profile.phone }}">
+                    </div>
+                </div>
+
+                <h5 class="fw-bold mb-3 border-bottom pb-2">Professional Details</h5>
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold small text-muted">Years of Experience</label>
+                        <input type="number" name="experience_years" class="form-control bg-light py-2 px-3 border-0 rounded-3" value="{{ provider.experience_years }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold small text-muted">City / Base Location</label>
+                        <select name="city" class="form-select bg-light py-2 border-0 rounded-3">
+                            <option value="">Select City</option>
+                            {% for c in cities %}
+                            <option value="{{ c.id }}" {% if provider.city_ref and provider.city_ref.id == c.id %}selected{% endif %}>{{ c.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label fw-bold small text-muted">Service Category</label>
+                        <select name="category" class="form-select bg-light py-2 border-0 rounded-3">
+                            <option value="">Select Category</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}" {% if provider.category and provider.category.id == cat.id %}selected{% endif %}>{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label class="form-label fw-bold small text-muted">Bio / About Your Work</label>
+                        <textarea name="bio" rows="4" class="form-control bg-light py-2 px-3 border-0 rounded-3" placeholder="Describe your skills and services...">{{ provider.description }}</textarea>
+                    </div>
+                </div>
+
+                <div class="text-end">
+                    <a href="{% url 'provider_dashboard' %}" class="btn btn-light rounded-pill px-4 text-muted border-0 fw-bold me-2">Cancel</a>
+                    <button type="submit" class="btn btn-primary rounded-pill px-5 fw-bold shadow-sm">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
