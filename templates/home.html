@@ -201,12 +201,14 @@
             style="border-radius: 24px; transition: all 0.4s ease;">
             <div class="position-relative overflow-hidden" style="height: 220px;">
                 {% if service.image %}
-                <img src="{{ service.image.url }}" class="w-100 h-100"
-                    style="object-fit: cover; transition: transform 0.5s ease;">
+                <img src="{{ service.image.url }}" 
+                     onerror="this.src='https://loremflickr.com/800/600/{{ service.category.name|slugify }},professional'; this.onerror=null;"
+                     class="w-100 h-100"
+                     style="object-fit: cover; transition: transform 0.5s ease;">
                 {% else %}
-                <div class="bg-light d-flex align-items-center justify-content-center h-100">
-                    <i class="fa-solid fa-image fa-3x text-muted opacity-25"></i>
-                </div>
+                <img src="https://loremflickr.com/800/600/{{ service.category.name|slugify }},professional" 
+                     class="w-100 h-100"
+                     style="object-fit: cover; transition: transform 0.5s ease;">
                 {% endif %}
                 <div class="position-absolute top-0 end-0 m-3">
                     <div class="badge bg-white text-dark shadow-sm px-3 py-2 rounded-pill">

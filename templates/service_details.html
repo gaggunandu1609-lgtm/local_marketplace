@@ -44,11 +44,12 @@
     <div class="col-lg-8">
         <div class="service-header">
             {% if service.image %}
-            <img src="{{ service.image.url }}" class="service-image-large shadow-sm">
+            <img src="{{ service.image.url }}" 
+                 onerror="this.src='https://loremflickr.com/800/600/{{ service.category.name|slugify }},professional'; this.onerror=null;"
+                 class="service-image-large shadow-sm">
             {% else %}
-            <div class="bg-light service-image-large d-flex align-items-center justify-content-center">
-                <i class="fa-solid fa-screwdriver-wrench fa-5x text-muted opacity-25"></i>
-            </div>
+            <img src="https://loremflickr.com/800/600/{{ service.category.name|slugify }},professional" 
+                 class="service-image-large shadow-sm">
             {% endif %}
 
             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -312,12 +313,14 @@
             style="border-radius: 20px; transition: all 0.3s ease; border: 1px solid rgba(255,255,255,0.3);">
             <div class="position-relative overflow-hidden" style="height: 160px;">
                 {% if rel_service.image %}
-                <img src="{{ rel_service.image.url }}" class="w-100 h-100"
-                    style="object-fit: cover; transition: transform 0.5s;">
+                <img src="{{ rel_service.image.url }}" 
+                     onerror="this.src='https://loremflickr.com/800/600/{{ rel_service.category.name|slugify }},professional'; this.onerror=null;"
+                     class="w-100 h-100"
+                     style="object-fit: cover; transition: transform 0.5s;">
                 {% else %}
-                <div class="bg-light d-flex align-items-center justify-content-center h-100">
-                    <i class="fa-solid fa-image fa-2x text-muted opacity-25"></i>
-                </div>
+                <img src="https://loremflickr.com/800/600/{{ rel_service.category.name|slugify }},professional" 
+                     class="w-100 h-100"
+                     style="object-fit: cover; transition: transform 0.5s;">
                 {% endif %}
                 <div class="position-absolute top-0 end-0 m-2">
                     <span class="badge bg-white text-dark shadow-sm" style="border-radius: 10px; font-size: 0.7rem;">

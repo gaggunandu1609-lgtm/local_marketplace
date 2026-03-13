@@ -4,11 +4,12 @@
         <div class="service-card h-100 d-flex flex-column" id="service-{{ service.id }}">
             <div class="position-relative">
                 {% if service.image %}
-                    <img src="{{ service.image.url }}" class="service-img" alt="{{ service.name }}">
+                    <img src="{{ service.image.url }}" 
+                         onerror="this.src='https://loremflickr.com/800/600/{{ service.category.name|slugify }},professional'; this.onerror=null;"
+                         class="service-img" alt="{{ service.name }}">
                 {% else %}
-                    <div class="bg-light service-img d-flex align-items-center justify-content-center">
-                        <i class="fa-solid fa-screwdriver-wrench fa-3x text-muted opacity-25"></i>
-                    </div>
+                    <img src="https://loremflickr.com/800/600/{{ service.category.name|slugify }},professional" 
+                        class="service-img" alt="{{ service.name }}">
                 {% endif %}
                 <div class="position-absolute top-0 end-0 m-3">
                     <div class="rating-badge shadow-sm">

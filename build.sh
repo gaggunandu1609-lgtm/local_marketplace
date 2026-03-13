@@ -6,3 +6,4 @@ pip install -r requirements.txt
 python manage.py collectstatic --no-input
 python manage.py migrate
 python load_data.py
+python populate_images.py
