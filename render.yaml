@@ -6,10 +6,10 @@ databases:
 
 services:
   - type: web
-    name: intern_project
+    name: local_marketplace
     env: python
     buildCommand: "./build.sh"
-    startCommand: "gunicorn intern_project.wsgi:application"
+    startCommand: "gunicorn local_marketplace.wsgi:application"
     plan: free
     envVars:
       - key: DATABASE_URL
