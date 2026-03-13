@@ -54,6 +54,9 @@
     </td>
     <td class="py-4 fw-bold text-primary">₹{{ booking.total_amount }}</td>
     <td class="px-4 py-4 text-end">
+        {% if booking.status == 'pending' %}
+            <a href="{% url 'booking_confirm' booking.id %}" class="btn btn-primary btn-sm py-2 px-3 rounded-pill shadow-none me-1">Pay Now</a>
+        {% endif %}
         {% if booking.status == 'pending' or booking.status == 'accepted' %}
             <button hx-post="{% url 'cancel_booking' booking.id %}"
                     hx-confirm="Are you sure you want to cancel this booking?"

@@ -104,7 +104,8 @@ def simulate_payment(request, booking_id):
             "booking_id": str(booking.id),
             "service": booking.service.name,
             "customer": request.user.username,
-        }
+        },
+        "payment_capture": 1
     }
 
     try:
